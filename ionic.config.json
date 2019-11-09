@@ -1,0 +1,7 @@
+{
+  "name": "PlanNGo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
