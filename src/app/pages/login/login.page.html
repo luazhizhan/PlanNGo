@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>PlanNGo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form>
+    <ion-item>
+      <ion-label position="stacked">Username</ion-label>
+      <ion-input required type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Password</ion-label>
+      <ion-input required type="password"></ion-input>
+    </ion-item>
+
+    <ion-button
+      [routerLink]="['/tabs/']"
+      expand="block"
+      type="submit"
+      color="success"
+      >Login</ion-button
+    >
+    <ion-button
+      [routerLink]="['/register/']"
+      fill="clear"
+      expand="block"
+      style="text-transform: none;"
+      >Register an account</ion-button
+    >
+    <ion-button
+      [routerLink]="['/register/']"
+      fill="clear"
+      expand="block"
+      style="text-transform: none;"
+      >Reset password</ion-button
+    >
+  </form>
+</ion-content>

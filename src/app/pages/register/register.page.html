@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form>
+    <ion-item>
+      <ion-label position="stacked"
+        >First Name <ion-text color="danger">*</ion-text></ion-label
+      >
+      <ion-input required type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked"
+        >Last Name <ion-text color="danger">*</ion-text></ion-label
+      >
+      <ion-input required type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked"
+        >Username <ion-text color="danger">*</ion-text></ion-label
+      >
+      <ion-input required type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked"
+        >Password <ion-text color="danger">*</ion-text></ion-label
+      >
+      <ion-input required type="password"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked"
+        >Confirm Password <ion-text color="danger">*</ion-text></ion-label
+      >
+      <ion-input required type="password"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked"
+        >Email<ion-text color="danger">*</ion-text></ion-label
+      >
+      <ion-input required type="email" inputmode="email"></ion-input>
+    </ion-item>
+
+    <ion-button
+      [routerLink]="['/login']"
+      expand="block"
+      type="submit"
+      color="success"
+      >Register</ion-button
+    >
+  </form>
+</ion-content>
