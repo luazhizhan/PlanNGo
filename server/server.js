@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 
 app.get("/", (_req, res) => {
-  res.json("Hello world");
+  res.json("Hello world2");
 });
 
 app.get("/user-info", async (_req, res) => {
