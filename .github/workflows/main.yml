@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v1
@@ -29,12 +29,12 @@ jobs:
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm install
+        run: npm ci
 
       - name: Lint and test project
         run: |
-          npm run lint
-          npm run test
+          npm run lint:ci
+          npm run test:ci
 
       - name: Use coturiv/setup-ionic
         uses: coturiv/setup-ionic@v1
@@ -49,6 +49,6 @@ jobs:
         with:
           name: android app
           path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
-          
+
       - name: Get APK app
         run: cat platforms/android/app/build/outputs/apk/debug/app-debug.apk

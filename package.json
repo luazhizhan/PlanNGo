@@ -9,7 +9,8 @@
     "build": "ng build",
     "resources": "capacitor-resources -p android,ios",
     "pretty": "prettier --write \"./**/*.{js,ts,scss,css}\"",
-    "test": "ng test",
+    "test": "ng test --watch=false --browsers=ChromeHeadlessCustom",
+    "test:watch": "ng test",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "e2e": "ng e2e"
@@ -59,6 +60,7 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "prettier": "^1.19.1",
     "protractor": "~5.4.0",
+    "puppeteer": "^2.0.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.4.3"
