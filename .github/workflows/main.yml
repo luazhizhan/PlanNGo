@@ -31,24 +31,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install
 
-      - name: Lint and test project
+      - name: Lint, test and build project
         run: |
           npm run lint
           npm run test
-
-      - name: Use coturiv/setup-ionic
-        uses: coturiv/setup-ionic@v1
-        with:
-          cordova-version: 8
-
-      - name: Build Cordova
-        run: |
-          ionic cordova build android
-
-      - uses: actions/download-artifact@v1
-        with:
-          name: android app
-          path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
-
-      - name: Get APK app
-        run: cat platforms/android/app/build/outputs/apk/debug/app-debug.apk
+          npm run build
