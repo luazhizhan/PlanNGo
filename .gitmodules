@@ -1,0 +1,3 @@
+[submodule "server/elp-planngo"]
+	path = server/elp-planngo
+	url = https://git.heroku.com/elp-planngo.git
