@@ -39,7 +39,7 @@ jobs:
       - name: Use coturiv/setup-ionic
         uses: coturiv/setup-ionic@v1
         with:
-          cordova-version: 9
+          cordova-version: 8
 
       - name: Build Cordova
         run: |
