@@ -3,19 +3,36 @@ name: CI
 on:
   pull_request:
     branches:
-    - master
-
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [12.x]
+
     steps:
-      - name: Deploy NodeJS to Heroku
-        working-directory: ./server
-        env:
-          HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }}
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: actions/cache@v1
+        name: Cache npm modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Lint, test and build project
         run: |
-          sudo apt install git
-          git add .
-          git commit "update server"
-          git push https://heroku:$HEROKU_API_TOKEN@git.heroku.com/elp-planngo.git
+          npm run lint
+          npm run test
+          npm run build
