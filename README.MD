@@ -43,6 +43,16 @@ Execute this command on the CLI to start this project on the browser.
 npm start
 ```
 
+## Heroku server Node.JS application
+
+- The heroku server Node.JS application is location at `server/elp-planngo` folder. This folder is a [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules). This folder will be empty after you clone this repo.
+
+- You will need to go to the heroku server folder to get all the files. This can be done using the command below.
+
+```bash
+git submodule update --init
+```
+
 ## Workflow
 
 The main branch for this project will be master branch. Please create new branch for your own development.
