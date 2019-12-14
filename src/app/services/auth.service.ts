@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
   constructor(private http: HttpClient) { }
 
-  login(username: string, pwd: string): Observable<Object> {
+  login(username: string, pwd: string): Observable<object> {
     const postData = JSON.stringify({
       username,
       pwd

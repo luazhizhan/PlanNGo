@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-import { AuthService } from '../../services/auth.service'
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -30,6 +30,6 @@ export class LoginPage implements OnInit {
       } else {
         return alert('Wrong username or password');
       }
-    })
+    });
   }
 }
