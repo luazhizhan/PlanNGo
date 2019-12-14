@@ -53,7 +53,7 @@ npm start
 git submodule update --init
 ```
 
-- You can use the same commands to commit and push changes you have made just like any git repository in this folder. The githhub repository (root folder) will track the changes that were made in the heroku git repository.
+- You can use the same commands to commit and push changes you have made in this folder just like any git repository. The githhub repository (root folder) will track the changes that were made in the heroku git repository.
 
 ## Workflow
 
