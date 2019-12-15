@@ -15,56 +15,75 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-list-header>
-      <ion-label><h2>Basic Info</h2></ion-label>
-    </ion-list-header>
-    <ion-item>
-      <ion-label position="floating">Plan name</ion-label>
-      <ion-input></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Date going</ion-label>
-      <ion-datetime displayFormat="DD MMM YY" placeholder="Select Date"></ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-label>Date returning</ion-label>
-      <ion-datetime displayFormat="DD MMM YY" placeholder="Select Date"></ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-label>Place that you are going</ion-label>
-      <ion-select placeholder="Country">
-        <ion-select-option value="malaysia">Malaysia</ion-select-option>
-        <ion-select-option value="thailand">Thailand</ion-select-option>
-        <ion-select-option value="korea">Korea</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Description</ion-label>
-      <ion-textarea row="6"></ion-textarea>
-    </ion-item>
-  </ion-list>
+  <form [formGroup]="planForm" (ngSubmit)="onPlanSubmit(planForm.value)">
+    <ion-list>
+      <ion-list-header>
+        <ion-label><h2>Basic Info</h2></ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label position="floating">Plan name</ion-label>
+        <ion-input required formControlName="title" placeholder="Korea Trip"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Date going</ion-label>
+        <ion-datetime
+          required
+          formControlName="dateGoing"
+          displayFormat="DD MMM YY"
+          yearValues="2019,2020, 2021"
+          placeholder="Select a date"
+        ></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Date returning</ion-label>
+        <ion-datetime
+          required
+          formControlName="dateReturning"
+          displayFormat="DD MMM YY"
+          yearValues="2019,2020, 2021"
+          placeholder="Select a Date"
+        ></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Country</ion-label>
+        <ion-input required formControlName="country" placeholder="Korea"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea row="6" formControlName="desc" placeholder="Going to korea"></ion-textarea>
+      </ion-item>
+    </ion-list>
 
-  <ion-list>
-    <ion-list-header>
-      <ion-label><h2>Flight Info</h2></ion-label>
-    </ion-list-header>
-    <ion-item>
-      <ion-label position="floating">Flight Code</ion-label>
-      <ion-input></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Date and time</ion-label>
-      <ion-datetime displayFormat="DD MMM YY HH:mm" placeholder="Select Date"></ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-label>Reminder (24 hours before)</ion-label>
-      <ion-checkbox color="primary" checked slot="end"></ion-checkbox>
-    </ion-item>
-  </ion-list>
+    <ion-list>
+      <ion-list-header>
+        <ion-label>
+          <h2>Flight Info (Going)</h2>
+        </ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label position="floating">Flight Code</ion-label>
+        <ion-input formControlName="flightCode"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Boarding Time</ion-label>
+        <ion-datetime
+          displayFormat="DD MMM YY HH:mm"
+          formControlName="boardingTime"
+          yearValues="2019,2020, 2021"
+          placeholder="Boarding data and time"
+        ></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Seat Number</ion-label>
+        <ion-input formControlName="seatInfo" type="number"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Boarding Time Reminder</ion-label>
+        <ion-checkbox color="primary" formControlName="flightReminder" slot="end"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+    <ion-button color="primary" type="submit" style="text-transform:capitalize;" expand="block">
+      {{btnName}} Travel Plan
+    </ion-button>
+  </form>
 </ion-content>
-<ion-footer>
-  <ion-button color="primary" expand="block">
-    Create Plan
-  </ion-button>
-</ion-footer>

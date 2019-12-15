@@ -9,5 +9,5 @@ export default interface TravelPlan {
     boardingTime?: Date;
     seatInfo?: number;
     flightReminder?: boolean;
-    userID: number;
+    userID?: number;
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ToastController, LoadingController } from '@ionic/angular';
+import { AlertController, ToastController, NavController, LoadingController } from '@ionic/angular';
+import { NavigationExtras } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ export class UtilsService {
   constructor(
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
+    private navCtrl: NavController,
     private loadingCtrl: LoadingController,
   ) { }
 
@@ -15,9 +17,9 @@ export class UtilsService {
     header: string,
     msg: string,
     cancelTxt: string,
-    cancelFunc: Function,
+    cancelFunc: () => void,
     okayTxt: string,
-    okayFunc: Function
+    okayFunc: () => void
   ): Promise<HTMLIonAlertElement> {
     return await this.alertCtrl.create({
       header,
@@ -39,7 +41,7 @@ export class UtilsService {
 
   async presentToast(
     message: string,
-    position: "bottom" | "middle" | "top",
+    position: 'bottom' | 'middle' | 'top',
     color: string,
     showCloseButton: boolean
   ): Promise<HTMLIonToastElement> {
@@ -53,9 +55,11 @@ export class UtilsService {
   }
 
   async presentLoading(message: string): Promise<HTMLIonLoadingElement> {
-    return await this.loadingCtrl.create({
+    const loadingPopup = await this.loadingCtrl.create({
       message
     });
+    loadingPopup.present();
+    return loadingPopup;
   }
 
   async presentAsyncErrorToast(e) {
@@ -67,5 +71,12 @@ export class UtilsService {
       true
     );
     return toast.present();
+  }
+
+  navigateForward(params: any, path: string) {
+    const navigationExtras: NavigationExtras = {
+      queryParams: params
+    };
+    this.navCtrl.navigateForward([path], navigationExtras);
   }
 }

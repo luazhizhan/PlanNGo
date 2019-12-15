@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import apisConfigs from '../../configs/apiConfigs';
 import { httpConfigs } from 'src/app/configs/httpConfigs';
-import travelPlan from '../../interfaces/travelPlan'
+import TravelPlan from '../../interfaces/travelPlan';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -16,12 +16,12 @@ export class TravelPlanService {
     return this.http.get(apisConfigs.get.getTravelPlanByUserID + userID.toString(), httpConfigs);
   }
 
-  createTravelPlan(travelPlan: travelPlan): Observable<any> {
+  createTravelPlan(travelPlan: TravelPlan): Observable<any> {
     const postData = JSON.stringify(travelPlan);
     return this.http.post(apisConfigs.post.createTravelPlan, postData, httpConfigs);
   }
 
-  updateTravelPlanByTravelPlanID(travelPlan: travelPlan): Observable<any> {
+  updateTravelPlanByTravelPlanID(travelPlan: TravelPlan): Observable<any> {
     const putData = JSON.stringify(travelPlan);
     return this.http.put(apisConfigs.put.updateTravelPlanByTravelPlanID, putData, httpConfigs);
   }
@@ -30,7 +30,7 @@ export class TravelPlanService {
     httpConfigs.body = {
       travelPlanID,
       userID
-    }
+    };
     return this.http.delete(apisConfigs.delete.deleteTravelPlanByIDs, httpConfigs);
   }
 }
