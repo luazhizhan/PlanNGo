@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Create Plan
+    </ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button (click)="collaboratorClick()">
+        <ion-icon slot="icon-only" name="person"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="planForm" (ngSubmit)="onPlanSubmit(planForm.value)">
+    <ion-list>
+      <ion-list-header>
+        <ion-label><h2>Basic Info</h2></ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label position="floating">Plan name</ion-label>
+        <ion-input required formControlName="title" placeholder="Korea Trip"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Date going</ion-label>
+        <ion-datetime
+          required
+          formControlName="dateGoing"
+          displayFormat="DD MMM YY"
+          yearValues="2019,2020, 2021"
+          placeholder="Select a date"
+        ></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Date returning</ion-label>
+        <ion-datetime
+          required
+          formControlName="dateReturning"
+          displayFormat="DD MMM YY"
+          yearValues="2019,2020, 2021"
+          placeholder="Select a Date"
+        ></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Country</ion-label>
+        <ion-input required formControlName="country" placeholder="Korea"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea row="6" formControlName="desc" placeholder="Going to korea"></ion-textarea>
+      </ion-item>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header>
+        <ion-label>
+          <h2>Flight Info (Going)</h2>
+        </ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label position="floating">Flight Code</ion-label>
+        <ion-input formControlName="flightCode"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Boarding Time</ion-label>
+        <ion-datetime
+          displayFormat="DD MMM YY HH:mm"
+          formControlName="boardingTime"
+          yearValues="2019,2020, 2021"
+          placeholder="Boarding data and time"
+        ></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Seat Number</ion-label>
+        <ion-input formControlName="seatInfo" type="number"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Boarding Time Reminder</ion-label>
+        <ion-checkbox color="primary" formControlName="flightReminder" slot="end"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+    <ion-button color="primary" type="submit" style="text-transform:capitalize;" expand="block">
+      {{btnName}} Travel Plan
+    </ion-button>
+  </form>
+</ion-content>

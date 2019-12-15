@@ -2,8 +2,8 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { PlanPage } from './plan.page';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PlanFormPage } from './plan-form.page';
 import { SharedModule } from '../../shared.module';
 
 @NgModule({
@@ -12,8 +12,9 @@ import { SharedModule } from '../../shared.module';
     CommonModule,
     FormsModule,
     SharedModule,
-    RouterModule.forChild([{ path: '', component: PlanPage }])
+    ReactiveFormsModule,
+    RouterModule.forChild([{ path: '', component: PlanFormPage }])
   ],
-  declarations: [PlanPage]
+  declarations: [PlanFormPage]
 })
-export class PlanPageModule {}
+export class PlanFormPageModule { }

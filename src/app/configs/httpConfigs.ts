@@ -5,5 +5,6 @@ export const httpConfigs = {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
-    })
+    }),
+    body: undefined
 };
