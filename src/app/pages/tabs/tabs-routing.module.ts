@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import { AuthGuard } from '../../auth.guard';
 
 const routes: Routes = [
   {
     path: 'tabs',
     component: TabsPage,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'home',
@@ -23,7 +25,12 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () =>
-              import('../plan/plan.module').then(m => m.PlanPageModule)
+              import('../my-plan-list/my-plan-list.module').then(m => m.MyPlanListPageModule)
+          },
+          {
+            path: 'plan-form',
+            loadChildren: () =>
+              import('../plan-form/plan-form.module').then(m => m.PlanFormPageModule)
           }
         ]
       },
@@ -57,6 +64,7 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: '/tabs/home',
+    canActivate: [AuthGuard],
     pathMatch: 'full'
   }
 ];
@@ -65,4 +73,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TabsPageRoutingModule {}
+export class TabsPageRoutingModule { }

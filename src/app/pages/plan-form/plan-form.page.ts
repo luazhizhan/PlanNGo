@@ -3,12 +3,12 @@ import { ModalController } from '@ionic/angular';
 import { CollaboratorModalComponent } from '../../components/collaborator-modal/collaborator-modal.component';
 
 @Component({
-  selector: 'app-plan',
-  templateUrl: 'plan.page.html',
-  styleUrls: ['plan.page.scss']
+  selector: 'app-plan-form',
+  templateUrl: 'plan-form.page.html',
+  styleUrls: ['plan-form.page.scss']
 })
-export class PlanPage {
-  constructor(private modalCtrl: ModalController) {}
+export class PlanFormPage {
+  constructor(private modalCtrl: ModalController) { }
 
   async collaboratorClick() {
     const modal = await this.modalCtrl.create({

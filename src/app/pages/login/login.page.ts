@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { UtilsService } from '../../services/utils/utils.service'
 
 @Component({
   selector: 'app-login',
@@ -10,8 +11,14 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginPage implements OnInit {
   authForm: FormGroup;
+  btnDisabled = false;
 
-  constructor(private navCtrl: NavController, private authSvc: AuthService, private formBuilder: FormBuilder) { }
+  constructor(
+    private navCtrl: NavController,
+    private authSvc: AuthService,
+    private utilsSvc: UtilsService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.authForm = this.formBuilder.group({
@@ -20,16 +27,34 @@ export class LoginPage implements OnInit {
     }, {});
   }
 
-  loginAuth(values) {
+  async loginAuth(values) {
+    this.btnDisabled = true;
+    let toast: HTMLIonToastElement;
     if (this.authForm.invalid) {
-      return alert('Please enter your username and password');
+      this.btnDisabled = false;
+      toast = await this.utilsSvc.presentToast(
+        'Please enter your username and password',
+        'bottom',
+        'danger',
+        true
+      );
+      return toast.present();
     }
-    this.authSvc.login(values.username, values.pwd).subscribe(validUser => {
+    this.authSvc.login(values.username, values.pwd).subscribe(async validUser => {
       if (validUser) {
+        this.btnDisabled = false;
+        this.authSvc.saveUserInfo(validUser);
         this.navCtrl.navigateForward('/tabs/home');
       } else {
-        return alert('Wrong username or password');
+        this.btnDisabled = false;
+        toast = await this.utilsSvc.presentToast(
+          'Wrong username or password',
+          'bottom',
+          'danger',
+          true
+        );
+        return toast.present();
       }
-    });
+    }, async e => await this.utilsSvc.presentAsyncErrorToast(e));
   }
 }
