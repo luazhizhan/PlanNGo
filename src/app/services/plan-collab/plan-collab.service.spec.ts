@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { TravelPlanService } from './travel-plan.service';
+import { PlanCollabService } from './plan-collab.service';
 import { HttpClientModule } from '@angular/common/http';
 
-describe('TravelPlanService', () => {
+describe('PlanCollabService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientModule]
   }));
 
   it('should be created', () => {
-    const service: TravelPlanService = TestBed.get(TravelPlanService);
+    const service: PlanCollabService = TestBed.get(PlanCollabService);
     expect(service).toBeTruthy();
   });
 });
