@@ -43,20 +43,9 @@ export class MyPlanListPage implements OnInit {
     }, async error => await this.utilsSvc.presentAsyncErrorToast(error));
   }
 
-  async showToastMsg(status: string): Promise<HTMLIonToastElement> {
-    return status === 'success' ?
-      await this.utilsSvc.presentToast(
-        'Travel plan deleted successfully',
-        'bottom',
-        'secondary',
-        true
-      )
-      : await this.utilsSvc.presentToast(
-        'An error has occur, please try again later',
-        'bottom',
-        'danger',
-        true
-      );
+  async delTravelPlanResult(results: any, isPlanCollab: boolean) {
+    await this.utilsSvc.presentStatusToast(results[0].status === 'success', 'Travel plan deleted successfully');
+    isPlanCollab ? this.planCollabTravelPlans = results[1].results : this.travelPlans = results[1].results;
   }
 
   async delTravelPlanClick(travelPlan: TravelPlan) {
@@ -65,11 +54,8 @@ export class MyPlanListPage implements OnInit {
       this.travelPlanSvc.delTravelPlanByIDs(travelPlan.travelPlanID, travelPlan.userID),
       this.travelPlanSvc.getTravelPlansByUserID(this.user.userID)
     ).pipe(toArray()).subscribe(async results => {
-      const toastPopup = await this.showToastMsg(results[0].status);
-      this.travelPlans = results[1].results;
-      loadingPopup.dismiss();
-      toastPopup.present();
-    }, async e => await this.utilsSvc.presentAsyncErrorToast(e));
+      await this.delTravelPlanResult(results, false);
+    }, async e => await this.utilsSvc.presentAsyncErrorToast(e), () => loadingPopup.dismiss());
   }
 
   async delPlanCollabTravelPlanClick(travelPlan: TravelPlan) {
@@ -78,12 +64,10 @@ export class MyPlanListPage implements OnInit {
       this.planCollabSvc.removePlanCollabByIds(travelPlan.travelPlanID, this.user.userID),
       this.travelPlanSvc.getTravelPlanByPlanCollabUserID(this.user.userID)
     ).pipe(toArray()).subscribe(async results => {
-      console.log(results);
-      const toastPopup = await this.showToastMsg(results[0].status);
+      await this.delTravelPlanResult(results, true);
+      await this.utilsSvc.presentStatusToast(results[0].status === 'success', 'Travel plan deleted successfully');
       this.planCollabTravelPlans = results[1].results;
-      loadingPopup.dismiss();
-      toastPopup.present();
-    }, async e => await this.utilsSvc.presentAsyncErrorToast(e));
+    }, async e => await this.utilsSvc.presentAsyncErrorToast(e), () => loadingPopup.dismiss());
   }
 
   async delTravelPlan(travelPlan: TravelPlan) {

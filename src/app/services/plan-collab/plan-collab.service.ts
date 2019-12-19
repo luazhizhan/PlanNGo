@@ -12,8 +12,12 @@ export class PlanCollabService {
 
   constructor(private http: HttpClient) { }
 
-  getPlanCollabByTravelPlanID(userID: number): Observable<any> {
-    return this.http.get(apisConfigs.get.getPlanCollabByTravelPlanID + userID.toString(), httpConfigs);
+  getPlanCollabByTravelPlanID(travelPlanID: number): Observable<any> {
+    return this.http.get(apisConfigs.get.getPlanCollabByTravelPlanID + travelPlanID.toString(), httpConfigs);
+  }
+
+  getPlanCollabUserDetailByTravelPlanID(travelPlanID: number): Observable<any> {
+    return this.http.get(apisConfigs.get.getPlanCollabUserDetailByTravelPlanID + travelPlanID.toString(), httpConfigs);
   }
 
   addPlanCollab(planCollab: PlanCollab): Observable<any> {

@@ -39,6 +39,14 @@ export class UtilsService {
     });
   }
 
+  async presentLoading(message: string): Promise<HTMLIonLoadingElement> {
+    const loadingPopup = await this.loadingCtrl.create({
+      message
+    });
+    loadingPopup.present();
+    return loadingPopup;
+  }
+
   async presentToast(
     message: string,
     position: 'bottom' | 'middle' | 'top',
@@ -54,15 +62,7 @@ export class UtilsService {
     });
   }
 
-  async presentLoading(message: string): Promise<HTMLIonLoadingElement> {
-    const loadingPopup = await this.loadingCtrl.create({
-      message
-    });
-    loadingPopup.present();
-    return loadingPopup;
-  }
-
-  async presentAsyncErrorToast(e) {
+  async presentAsyncErrorToast(e): Promise<void> {
     console.error(e);
     const toast = await this.presentToast(
       'An error has occur, please try again later',
@@ -70,6 +70,30 @@ export class UtilsService {
       'danger',
       true
     );
+    return toast.present();
+  }
+
+  async presentStatusToast(
+    status: boolean,
+    successMsg: string,
+    errMsg: string = 'An error has occur, please try again later'
+  ): Promise<void> {
+    let toast: HTMLIonToastElement;
+    if (status) {
+      toast = await this.presentToast(
+        successMsg,
+        'bottom',
+        'secondary',
+        true
+      );
+    } else {
+      toast = await this.presentToast(
+        errMsg,
+        'bottom',
+        'danger',
+        true
+      );
+    }
     return toast.present();
   }
 

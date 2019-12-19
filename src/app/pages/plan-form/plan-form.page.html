@@ -4,10 +4,10 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>
-      Create Plan
+      {{taskName}} Plan
     </ion-title>
     <ion-buttons slot="secondary">
-      <ion-button (click)="collaboratorClick()">
+      <ion-button (click)="collaboratorClick()" [hidden]="isCollab" >
         <ion-icon slot="icon-only" name="person"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -83,7 +83,7 @@
       </ion-item>
     </ion-list>
     <ion-button color="primary" type="submit" style="text-transform:capitalize;" expand="block">
-      {{btnName}} Travel Plan
+      {{taskName}} Travel Plan
     </ion-button>
   </form>
 </ion-content>
