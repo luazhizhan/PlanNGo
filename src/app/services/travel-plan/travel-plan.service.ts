@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import apisConfigs from '../../configs/apiConfigs';
 import { httpConfigs } from 'src/app/configs/httpConfigs';
 import TravelPlan from '../../interfaces/travelPlan';
-import { Observable } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,19 @@ export class TravelPlanService {
 
   constructor(private http: HttpClient) { }
 
+  getAllTravelPlans(userID: number): Observable<any> {
+    return zip(
+      this.getTravelPlansByUserID(userID),
+      this.getTravelPlanByPlanCollabUserID(userID)
+    );
+  }
+
   getTravelPlansByUserID(userID: number): Observable<any> {
     return this.http.get(apisConfigs.get.getTravelPlanByUserID + userID.toString(), httpConfigs);
+  }
+
+  getTravelPlanByPlanCollabUserID(userID: number): Observable<any> {
+    return this.http.get(apisConfigs.get.getTravelPlanByPlanCollabUserID + userID.toString(), httpConfigs);
   }
 
   createTravelPlan(travelPlan: TravelPlan): Observable<any> {
