@@ -31,17 +31,20 @@ export class PlanFormPage implements OnInit {
     private travelPlanSvc: TravelPlanService,
     private utilsSvc: UtilsService
   ) {
-    this.planForm = this.formBuilder.group({
-      title: ['', [Validators.required]],
-      dateGoing: ['', [Validators.required]],
-      dateReturning: ['', [Validators.required]],
-      country: ['', [Validators.required]],
-      desc: ['', [Validators.minLength(3)]],
-      flightCode: ['', []],
-      boardingTime: ['', []],
-      seatInfo: ['', []],
-      flightReminder: ['', []],
-    }, {});
+    this.planForm = this.formBuilder.group(
+      {
+        title: ['', [Validators.required]],
+        dateGoing: ['', [Validators.required]],
+        dateReturning: ['', [Validators.required]],
+        country: ['', [Validators.required]],
+        desc: ['', [Validators.minLength(3)]],
+        flightCode: ['', []],
+        boardingTime: ['', []],
+        seatInfo: ['', []],
+        flightReminder: ['', []]
+      },
+      {}
+    );
   }
 
   ngOnInit() {
@@ -59,7 +62,7 @@ export class PlanFormPage implements OnInit {
           flightCode: this.travelPlan.flightCode,
           boardingTime: this.travelPlan.boardingTime,
           seatInfo: this.travelPlan.seatInfo,
-          flightReminder: this.travelPlan.flightReminder,
+          flightReminder: this.travelPlan.flightReminder
         });
         this.taskName = 'Update';
       } else {
@@ -116,19 +119,32 @@ export class PlanFormPage implements OnInit {
 
   createTravelPlan(values: TravelPlan, loadingPopup: HTMLIonLoadingElement) {
     this.setTravelPlanObj(undefined, this.user.userID, values);
-    this.travelPlanSvc.createTravelPlan(this.travelPlan).subscribe(async result => {
-      await this.utilsSvc.presentStatusToast(result.travelPlanId, 'Travel plan created successfully');
-      if (result.travelPlanId) {
-        this.navCtrl.navigateRoot('/tabs/plan');
-      }
-    }, async e => await this.utilsSvc.presentAsyncErrorToast(e), () => loadingPopup.dismiss());
+    this.travelPlanSvc.createTravelPlan(this.travelPlan).subscribe(
+      async result => {
+        await this.utilsSvc.presentStatusToast(
+          result.travelPlanId,
+          'Travel plan created successfully'
+        );
+        if (result.travelPlanId) {
+          this.navCtrl.navigateRoot('/tabs/plan');
+        }
+      },
+      async e => await this.utilsSvc.presentAsyncErrorToast(e),
+      () => loadingPopup.dismiss()
+    );
   }
 
   updateTravelPlan(values: TravelPlan, loadingPopup: HTMLIonLoadingElement) {
     this.setTravelPlanObj(this.travelPlan.travelPlanID, this.travelPlan.userID, values);
-    this.travelPlanSvc.updateTravelPlanByTravelPlanID(this.travelPlan)
-      .subscribe(async result => {
-        await this.utilsSvc.presentStatusToast(result.status === 'success', 'Travel plan updated successfully');
-      }, async e => await this.utilsSvc.presentAsyncErrorToast(e), () => loadingPopup.dismiss());
+    this.travelPlanSvc.updateTravelPlanByTravelPlanID(this.travelPlan).subscribe(
+      async result => {
+        await this.utilsSvc.presentStatusToast(
+          result.status === 'success',
+          'Travel plan updated successfully'
+        );
+      },
+      async e => await this.utilsSvc.presentAsyncErrorToast(e),
+      () => loadingPopup.dismiss()
+    );
   }
 }

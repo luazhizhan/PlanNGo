@@ -15,7 +15,6 @@ import { toArray } from 'rxjs/operators';
   styleUrls: ['./collaborator-modal.component.scss']
 })
 export class CollaboratorModalComponent implements OnInit {
-
   @Input() user: User;
   @Input() travelPlan: TravelPlan;
 
@@ -32,21 +31,23 @@ export class CollaboratorModalComponent implements OnInit {
   ) {
     this.collabForm = this.formBuilder.group({
       username: ['', [Validators.min(3)]],
-      email: ['', [Validators.email]],
+      email: ['', [Validators.email]]
     });
   }
 
   ngOnInit() {
-    this.planCollabSvc.getPlanCollabUserDetailByTravelPlanID(this.travelPlan.travelPlanID).subscribe(data => {
-      this.planCollabs = data.results.map(planCollab => {
-        return {
-          userID: planCollab.userID,
-          userName: planCollab.userName,
-          email: planCollab.email
-        };
+    this.planCollabSvc
+      .getPlanCollabUserDetailByTravelPlanID(this.travelPlan.travelPlanID)
+      .subscribe(data => {
+        this.planCollabs = data.results.map(planCollab => {
+          return {
+            userID: planCollab.userID,
+            userName: planCollab.userName,
+            email: planCollab.email
+          };
+        });
+        this.loading = false;
       });
-      this.loading = false;
-    });
   }
 
   async planCollabClick(planCollab: User) {
@@ -54,7 +55,7 @@ export class CollaboratorModalComponent implements OnInit {
       'Remove Collaborator',
       planCollab.userName + ' will be remove from the plan',
       'Cancel',
-      () => { },
+      () => {},
       'Okay',
       async () => this.removeCollab(planCollab)
     );
@@ -74,16 +75,18 @@ export class CollaboratorModalComponent implements OnInit {
     }
 
     const loadingPopup = await this.utilsSvc.presentLoading('Seaching for user...');
-    this.authSvc.getUserByUsernameOrEmail(values.username, values.email).subscribe(async (planCollab: User) => {
-      loadingPopup.dismiss();
-      if (planCollab) {
-        planCollab.userID !== this.user.userID ?
-          this.showCollabPopup(planCollab) :
-          await this.presentErrorToast('You are the creator of the plan');
-      } else {
-        await this.presentErrorToast('User not found');
-      }
-    });
+    this.authSvc
+      .getUserByUsernameOrEmail(values.username, values.email)
+      .subscribe(async (planCollab: User) => {
+        loadingPopup.dismiss();
+        if (planCollab) {
+          planCollab.userID !== this.user.userID
+            ? this.showCollabPopup(planCollab)
+            : await this.presentErrorToast('You are the creator of the plan');
+        } else {
+          await this.presentErrorToast('User not found');
+        }
+      });
   }
 
   async dismissModal() {
@@ -100,7 +103,7 @@ export class CollaboratorModalComponent implements OnInit {
       'Add Collaborator',
       planCollab.userName + ' will be added as a collaborator',
       'Cancel',
-      () => { },
+      () => {},
       'Okay',
       async () => this.addCollab(planCollab)
     );
@@ -110,12 +113,24 @@ export class CollaboratorModalComponent implements OnInit {
   async addCollab(planCollab: User) {
     const loadingPopup = await this.utilsSvc.presentLoading('Adding collaborator...');
     concat(
-      this.planCollabSvc.addPlanCollab({ userID: planCollab.userID, travelPlanID: this.travelPlan.travelPlanID }),
+      this.planCollabSvc.addPlanCollab({
+        userID: planCollab.userID,
+        travelPlanID: this.travelPlan.travelPlanID
+      }),
       this.planCollabSvc.getPlanCollabUserDetailByTravelPlanID(this.travelPlan.travelPlanID)
-    ).pipe(toArray()).subscribe(async results => {
-      await this.utilsSvc.presentStatusToast(results[0].planCollaborateID, planCollab.userName + ' has been added as collaborator');
-      this.planCollabs = results[1].results;
-    }, async e => await this.utilsSvc.presentAsyncErrorToast(e), () => loadingPopup.dismiss());
+    )
+      .pipe(toArray())
+      .subscribe(
+        async results => {
+          await this.utilsSvc.presentStatusToast(
+            results[0].planCollaborateID,
+            planCollab.userName + ' has been added as collaborator'
+          );
+          this.planCollabs = results[1].results;
+        },
+        async e => await this.utilsSvc.presentAsyncErrorToast(e),
+        () => loadingPopup.dismiss()
+      );
   }
 
   async removeCollab(planCollab: User) {
@@ -123,9 +138,18 @@ export class CollaboratorModalComponent implements OnInit {
     concat(
       this.planCollabSvc.removePlanCollabByIds(this.travelPlan.travelPlanID, planCollab.userID),
       this.planCollabSvc.getPlanCollabUserDetailByTravelPlanID(this.travelPlan.travelPlanID)
-    ).pipe(toArray()).subscribe(async results => {
-      await this.utilsSvc.presentStatusToast(results[0].status === 'success', planCollab.userName + ' has been removed from the plan');
-      this.planCollabs = results[1].results;
-    }, async e => await this.utilsSvc.presentAsyncErrorToast(e), () => loadingPopup.dismiss());
+    )
+      .pipe(toArray())
+      .subscribe(
+        async results => {
+          await this.utilsSvc.presentStatusToast(
+            results[0].status === 'success',
+            planCollab.userName + ' has been removed from the plan'
+          );
+          this.planCollabs = results[1].results;
+        },
+        async e => await this.utilsSvc.presentAsyncErrorToast(e),
+        () => loadingPopup.dismiss()
+      );
   }
 }

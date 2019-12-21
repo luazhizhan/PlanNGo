@@ -12,9 +12,8 @@ describe('PlanListPage', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientModule],
       declarations: [MyPlanListPage],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    })
-      .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

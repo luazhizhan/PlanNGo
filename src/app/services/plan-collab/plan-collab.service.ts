@@ -9,15 +9,20 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PlanCollabService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getPlanCollabByTravelPlanID(travelPlanID: number): Observable<any> {
-    return this.http.get(apisConfigs.get.getPlanCollabByTravelPlanID + travelPlanID.toString(), httpConfigs);
+    return this.http.get(
+      apisConfigs.get.getPlanCollabByTravelPlanID + travelPlanID.toString(),
+      httpConfigs
+    );
   }
 
   getPlanCollabUserDetailByTravelPlanID(travelPlanID: number): Observable<any> {
-    return this.http.get(apisConfigs.get.getPlanCollabUserDetailByTravelPlanID + travelPlanID.toString(), httpConfigs);
+    return this.http.get(
+      apisConfigs.get.getPlanCollabUserDetailByTravelPlanID + travelPlanID.toString(),
+      httpConfigs
+    );
   }
 
   addPlanCollab(planCollab: PlanCollab): Observable<any> {
