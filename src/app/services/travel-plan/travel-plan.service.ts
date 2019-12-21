@@ -9,14 +9,10 @@ import { Observable, zip } from 'rxjs';
   providedIn: 'root'
 })
 export class TravelPlanService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAllTravelPlans(userID: number): Observable<any> {
-    return zip(
-      this.getTravelPlansByUserID(userID),
-      this.getTravelPlanByPlanCollabUserID(userID)
-    );
+    return zip(this.getTravelPlansByUserID(userID), this.getTravelPlanByPlanCollabUserID(userID));
   }
 
   getTravelPlansByUserID(userID: number): Observable<any> {
@@ -24,7 +20,10 @@ export class TravelPlanService {
   }
 
   getTravelPlanByPlanCollabUserID(userID: number): Observable<any> {
-    return this.http.get(apisConfigs.get.getTravelPlanByPlanCollabUserID + userID.toString(), httpConfigs);
+    return this.http.get(
+      apisConfigs.get.getTravelPlanByPlanCollabUserID + userID.toString(),
+      httpConfigs
+    );
   }
 
   createTravelPlan(travelPlan: TravelPlan): Observable<any> {

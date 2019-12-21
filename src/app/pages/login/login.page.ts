@@ -18,13 +18,16 @@ export class LoginPage implements OnInit {
     private authSvc: AuthService,
     private utilsSvc: UtilsService,
     private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.authForm = this.formBuilder.group({
-      username: ['', [Validators.required]],
-      pwd: ['', [Validators.required]],
-    }, {});
+    this.authForm = this.formBuilder.group(
+      {
+        username: ['', [Validators.required]],
+        pwd: ['', [Validators.required]]
+      },
+      {}
+    );
   }
 
   async loginAuth(values) {
@@ -40,21 +43,24 @@ export class LoginPage implements OnInit {
       );
       return toast.present();
     }
-    this.authSvc.login(values.username, values.pwd).subscribe(async validUser => {
-      if (validUser) {
-        this.btnDisabled = false;
-        this.authSvc.saveUserInfo(validUser);
-        this.navCtrl.navigateForward('/tabs/home');
-      } else {
-        this.btnDisabled = false;
-        toast = await this.utilsSvc.presentToast(
-          'Wrong username or password',
-          'bottom',
-          'danger',
-          true
-        );
-        return toast.present();
-      }
-    }, async e => await this.utilsSvc.presentAsyncErrorToast(e));
+    this.authSvc.login(values.username, values.pwd).subscribe(
+      async validUser => {
+        if (validUser) {
+          this.btnDisabled = false;
+          this.authSvc.saveUserInfo(validUser);
+          this.navCtrl.navigateForward('/tabs/home');
+        } else {
+          this.btnDisabled = false;
+          toast = await this.utilsSvc.presentToast(
+            'Wrong username or password',
+            'bottom',
+            'danger',
+            true
+          );
+          return toast.present();
+        }
+      },
+      async e => await this.utilsSvc.presentAsyncErrorToast(e)
+    );
   }
 }

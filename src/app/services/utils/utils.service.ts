@@ -10,8 +10,8 @@ export class UtilsService {
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private navCtrl: NavController,
-    private loadingCtrl: LoadingController,
-  ) { }
+    private loadingCtrl: LoadingController
+  ) {}
 
   async confirmAlert(
     header: string,
@@ -80,19 +80,9 @@ export class UtilsService {
   ): Promise<void> {
     let toast: HTMLIonToastElement;
     if (status) {
-      toast = await this.presentToast(
-        successMsg,
-        'bottom',
-        'secondary',
-        true
-      );
+      toast = await this.presentToast(successMsg, 'bottom', 'secondary', true);
     } else {
-      toast = await this.presentToast(
-        errMsg,
-        'bottom',
-        'danger',
-        true
-      );
+      toast = await this.presentToast(errMsg, 'bottom', 'danger', true);
     }
     return toast.present();
   }
