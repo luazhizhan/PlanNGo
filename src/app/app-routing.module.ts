@@ -16,7 +16,9 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterPageModule)
-  }
+  },
+  { path: 'journal-filter', loadChildren: './pages/modals/journal-filter/journal-filter.module#JournalFilterPageModule' }
+
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
