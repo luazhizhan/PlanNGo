@@ -47,6 +47,16 @@ const routes: Routes = [
           }
         ]
       },
+      //{
+        //path: 'wishlist',
+        //children: [
+          //{
+            //path: '',
+            //loadChildren: () =>
+              //import('../wishlist/wishlist.module').then(m => m.WishlistPageModule)
+          //}
+        //]
+      //},
       {
         path: '',
         redirectTo: '/tabs/home',
