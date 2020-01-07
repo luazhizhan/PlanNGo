@@ -1,9 +1,34 @@
+<!-- <ion-button color="primary" (click)="selectImage()">Take Picture</ion-button>
+<form [formGroup]="journalForm" (ngSubmit)="onSubmit()">
+    <ion-list>
+     <ion-card *ngIf="image">
+      <img class="camera-img" src="{{image}}"/>
+     </ion-card> 
+     <ion-card>
+      <ion-textarea class="textArea" formControlName="details">
+  
+      </ion-textarea>
+     </ion-card>
+    </ion-list>
+    <ion-button color="primary" type="submit">Submit</ion-button>
+</form>
+ -->
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      Journal
+      PlanNGo
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content></ion-content>
+<ion-content padding="true" class="journalPage has-header">
+  <ion-button id="camera" class="button button-positive button-block" (click)="getCamera()">Camera</ion-button>
+  <div id="page-container1" >
+      <img class="image" src="{{image}}" alt=""/>
+  </div>
+  <div id="page-container2">
+    <form [formGroup]="journalForm" (ngSubmit)="onSubmit()" id="page-form4" class="list">
+      <ion-textarea class="textArea" formControlName="details" placeholder="Description"></ion-textarea>
+      <ion-button id="page-button2" class="button button-positive button-block" type="submit">Submit</ion-button>
+    </form>
+  </div>
+</ion-content>
