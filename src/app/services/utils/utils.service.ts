@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ToastController, NavController, LoadingController } from '@ionic/angular';
+import {
+  AlertController,
+  ToastController,
+  NavController,
+  LoadingController
+} from '@ionic/angular';
 import { NavigationExtras } from '@angular/router';
 
 @Injectable({
