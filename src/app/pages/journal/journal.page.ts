@@ -9,7 +9,14 @@ import {
   LoadingController
 } from "@ionic/angular";
 
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { AuthService } from '../../services/auth/auth.service';
+import { UtilsService } from '../../services/utils/utils.service';
+import { TravelPlanService } from '../../services/travel-plan/travel-plan.service';
+import { TravelJournalService } from '../../services/travel-journal/travel-journal.service';
+import User from 'src/app/interfaces/user';
+import TravelPlan from 'src/app/interfaces/travelPlan';
 
 @Component({
   selector: "app-journal",
@@ -28,18 +35,38 @@ export class JournalPage implements OnInit, AfterViewInit {
   imageObj: any;
 
   journalForm: FormGroup;
+  travelPlanTitle: string;
+  travelPlanID: string;
+  travelPlan: TravelPlan[];
+
+  user: User;
+  loading: boolean;
 
   constructor(
     private file: File,
     private cameraService: CameraService,
     private camera: Camera,
-    private actionSheetController: ActionSheetController
+    private actionSheetController: ActionSheetController,
+    private travelPlanSvc: TravelPlanService,
+    private authSvc: AuthService,
+    private utilsSvc: UtilsService
   ) {
     
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.journalForm = this.createForm();
+    this.user = this.authSvc.getUserInfo();
+    this.travelPlanSvc.getTravelPlansByUserID(this.user.userID).subscribe(
+      travelPlans => {
+        if (travelPlans.results) {
+          this.travelPlan = travelPlans.results;
+          this.loading = false;
+          debugger;
+        }
+      },
+      async e => await this.utilsSvc.presentAsyncErrorToast(e)
+    );
     console.log(this.journalForm);
   }
 
@@ -109,7 +136,8 @@ export class JournalPage implements OnInit, AfterViewInit {
   createForm() {
     return new FormGroup({
       imageData: new FormControl(this.image),
-      details: new FormControl('')
+      travelPlanTitle: new FormControl('', [Validators.required]),
+      journalDetails: new FormControl('')
     });
   }
 }

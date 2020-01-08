@@ -1,34 +1,25 @@
-<!-- <ion-button color="primary" (click)="selectImage()">Take Picture</ion-button>
-<form [formGroup]="journalForm" (ngSubmit)="onSubmit()">
-    <ion-list>
-     <ion-card *ngIf="image">
-      <img class="camera-img" src="{{image}}"/>
-     </ion-card> 
-     <ion-card>
-      <ion-textarea class="textArea" formControlName="details">
-  
-      </ion-textarea>
-     </ion-card>
-    </ion-list>
-    <ion-button color="primary" type="submit">Submit</ion-button>
-</form>
- -->
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
       PlanNGo
     </ion-title>
   </ion-toolbar>
+  <ion-progress-bar type="indeterminate" color="secondary" [hidden]="!loading"></ion-progress-bar>
 </ion-header>
-<ion-content padding="true" class="journalPage has-header">
-  <ion-button id="camera" class="button button-positive button-block" (click)="getCamera()">Camera</ion-button>
-  <div id="page-container1" >
-      <img class="image" src="{{image}}" alt=""/>
-  </div>
-  <div id="page-container2">
-    <form [formGroup]="journalForm" (ngSubmit)="onSubmit()" id="page-form4" class="list">
-      <ion-textarea class="textArea" formControlName="details" placeholder="Description"></ion-textarea>
+<ion-content class="journalPage has-header">
+  <form [formGroup]="journalForm" (ngSubmit)="onSubmit()" id="page-form4" class="list">
+    <ion-button id="camera" class="button button-positive button-block" (click)="getCamera()">Camera</ion-button>
+    <div id="page-container1">
+      <img class="image" src="{{image}}" alt="" />
+    </div>
+    <div *ngIf="travelPlan">
+      <ion-select formControlName="travelPlanTitle" *ngFor="let options of travelPlan" placeholder="Select Travel Plan">
+        <ion-select-option  value="options.title">{{options.title}}</ion-select-option>
+      </ion-select>
+    </div>
+    <div id="page-container2">
+      <ion-textarea class="textArea" formControlName="journalDetails" placeholder="Description"></ion-textarea>
       <ion-button id="page-button2" class="button button-positive button-block" type="submit">Submit</ion-button>
-    </form>
-  </div>
+    </div>
+  </form>
 </ion-content>
