@@ -46,9 +46,6 @@ export class WishlistService {
       wishListID,
       userID
     };
-    return this.http.delete(
-      apisConfigs.delete.deleteWishList,
-      httpConfigs
-    );
+    return this.http.delete(apisConfigs.delete.deleteWishList, httpConfigs);
   }
 }
