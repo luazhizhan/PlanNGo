@@ -13,12 +13,7 @@ describe('CollaboratorModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-        IonicModule,
-        ReactiveFormsModule,
-        RouterTestingModule
-      ],
+      imports: [HttpClientModule, IonicModule, ReactiveFormsModule, RouterTestingModule],
       declarations: [CollaboratorModalComponent],
       providers: [AngularDelegate, ModalController],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -32,7 +27,7 @@ describe('CollaboratorModalComponent', () => {
       travelPlanID: 1,
       title: 'title',
       country: 'country',
-      desc: 'Lorem ipsum dolor sit amet,',
+      desc: "'Lorem ipsum dolor sit amet,",
       dateGoing: new Date(),
       dateReturning: new Date()
     };

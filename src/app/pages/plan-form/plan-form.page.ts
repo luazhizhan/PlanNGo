@@ -52,8 +52,7 @@ export class PlanFormPage implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       if (Object.keys(params).length) {
         this.travelPlan = JSON.parse(params.travelPlan);
-        this.isCollab =
-          this.travelPlan.userID === this.user.userID ? false : true;
+        this.isCollab = this.travelPlan.userID === this.user.userID ? false : true;
         this.planForm.setValue({
           title: this.travelPlan.title,
           dateGoing: this.travelPlan.dateGoing,
@@ -136,22 +135,16 @@ export class PlanFormPage implements OnInit {
   }
 
   updateTravelPlan(values: TravelPlan, loadingPopup: HTMLIonLoadingElement) {
-    this.setTravelPlanObj(
-      this.travelPlan.travelPlanID,
-      this.travelPlan.userID,
-      values
+    this.setTravelPlanObj(this.travelPlan.travelPlanID, this.travelPlan.userID, values);
+    this.travelPlanSvc.updateTravelPlanByTravelPlanID(this.travelPlan).subscribe(
+      async result => {
+        await this.utilsSvc.presentStatusToast(
+          result.status === 'success',
+          'Travel plan updated successfully'
+        );
+      },
+      async e => await this.utilsSvc.presentAsyncErrorToast(e),
+      () => loadingPopup.dismiss()
     );
-    this.travelPlanSvc
-      .updateTravelPlanByTravelPlanID(this.travelPlan)
-      .subscribe(
-        async result => {
-          await this.utilsSvc.presentStatusToast(
-            result.status === 'success',
-            'Travel plan updated successfully'
-          );
-        },
-        async e => await this.utilsSvc.presentAsyncErrorToast(e),
-        () => loadingPopup.dismiss()
-      );
   }
 }
