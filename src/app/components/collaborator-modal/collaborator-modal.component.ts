@@ -64,10 +64,7 @@ export class CollaboratorModalComponent implements OnInit {
 
   // TODO : Check if user is already a collaborator
   async collabFormSubmit(values: any) {
-    if (
-      this.collabForm.invalid ||
-      !(values.username.trim() || values.email.trim())
-    ) {
+    if (this.collabForm.invalid || !(values.username.trim() || values.email.trim())) {
       const toast = await this.utilsSvc.presentToast(
         'Invalid inputs found.',
         'bottom',
@@ -77,9 +74,7 @@ export class CollaboratorModalComponent implements OnInit {
       return toast.present();
     }
 
-    const loadingPopup = await this.utilsSvc.presentLoading(
-      'Seaching for user...'
-    );
+    const loadingPopup = await this.utilsSvc.presentLoading('Seaching for user...');
     this.authSvc
       .getUserByUsernameOrEmail(values.username, values.email)
       .subscribe(async (planCollab: User) => {
@@ -99,12 +94,7 @@ export class CollaboratorModalComponent implements OnInit {
   }
 
   async presentErrorToast(errMsg: string) {
-    const toast = await this.utilsSvc.presentToast(
-      errMsg,
-      'bottom',
-      'danger',
-      true
-    );
+    const toast = await this.utilsSvc.presentToast(errMsg, 'bottom', 'danger', true);
     toast.present();
   }
 
@@ -121,17 +111,13 @@ export class CollaboratorModalComponent implements OnInit {
   }
 
   async addCollab(planCollab: User) {
-    const loadingPopup = await this.utilsSvc.presentLoading(
-      'Adding collaborator...'
-    );
+    const loadingPopup = await this.utilsSvc.presentLoading('Adding collaborator...');
     concat(
       this.planCollabSvc.addPlanCollab({
         userID: planCollab.userID,
         travelPlanID: this.travelPlan.travelPlanID
       }),
-      this.planCollabSvc.getPlanCollabUserDetailByTravelPlanID(
-        this.travelPlan.travelPlanID
-      )
+      this.planCollabSvc.getPlanCollabUserDetailByTravelPlanID(this.travelPlan.travelPlanID)
     )
       .pipe(toArray())
       .subscribe(
@@ -148,17 +134,10 @@ export class CollaboratorModalComponent implements OnInit {
   }
 
   async removeCollab(planCollab: User) {
-    const loadingPopup = await this.utilsSvc.presentLoading(
-      'Removing collaborator...'
-    );
+    const loadingPopup = await this.utilsSvc.presentLoading('Removing collaborator...');
     concat(
-      this.planCollabSvc.removePlanCollabByIds(
-        this.travelPlan.travelPlanID,
-        planCollab.userID
-      ),
-      this.planCollabSvc.getPlanCollabUserDetailByTravelPlanID(
-        this.travelPlan.travelPlanID
-      )
+      this.planCollabSvc.removePlanCollabByIds(this.travelPlan.travelPlanID, planCollab.userID),
+      this.planCollabSvc.getPlanCollabUserDetailByTravelPlanID(this.travelPlan.travelPlanID)
     )
       .pipe(toArray())
       .subscribe(

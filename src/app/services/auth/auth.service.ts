@@ -23,10 +23,7 @@ export class AuthService {
     username = !username ? null : username;
     email = !email ? null : email;
     const queryStr = username + '/' + email;
-    return this.http.get(
-      apisConfigs.get.getUserByUsernameOrEmail + queryStr,
-      httpConfigs
-    );
+    return this.http.get(apisConfigs.get.getUserByUsernameOrEmail + queryStr, httpConfigs);
   }
 
   saveUserInfo(user: User): void {

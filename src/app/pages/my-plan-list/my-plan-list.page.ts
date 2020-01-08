@@ -60,14 +60,9 @@ export class MyPlanListPage implements OnInit {
   }
 
   async delTravelPlanClick(travelPlan: TravelPlan) {
-    const loadingPopup = await this.utilsSvc.presentLoading(
-      'Deleting travel plan...'
-    );
+    const loadingPopup = await this.utilsSvc.presentLoading('Deleting travel plan...');
     concat(
-      this.travelPlanSvc.delTravelPlanByIDs(
-        travelPlan.travelPlanID,
-        travelPlan.userID
-      ),
+      this.travelPlanSvc.delTravelPlanByIDs(travelPlan.travelPlanID, travelPlan.userID),
       this.travelPlanSvc.getTravelPlansByUserID(this.user.userID)
     )
       .pipe(toArray())
@@ -81,14 +76,9 @@ export class MyPlanListPage implements OnInit {
   }
 
   async delPlanCollabTravelPlanClick(travelPlan: TravelPlan) {
-    const loadingPopup = await this.utilsSvc.presentLoading(
-      'Leaving travel plan...'
-    );
+    const loadingPopup = await this.utilsSvc.presentLoading('Leaving travel plan...');
     concat(
-      this.planCollabSvc.removePlanCollabByIds(
-        travelPlan.travelPlanID,
-        this.user.userID
-      ),
+      this.planCollabSvc.removePlanCollabByIds(travelPlan.travelPlanID, this.user.userID),
       this.travelPlanSvc.getTravelPlanByPlanCollabUserID(this.user.userID)
     )
       .pipe(toArray())

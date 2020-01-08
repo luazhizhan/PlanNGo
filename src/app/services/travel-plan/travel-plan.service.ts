@@ -12,17 +12,11 @@ export class TravelPlanService {
   constructor(private http: HttpClient) {}
 
   getAllTravelPlans(userID: number): Observable<any> {
-    return zip(
-      this.getTravelPlansByUserID(userID),
-      this.getTravelPlanByPlanCollabUserID(userID)
-    );
+    return zip(this.getTravelPlansByUserID(userID), this.getTravelPlanByPlanCollabUserID(userID));
   }
 
   getTravelPlansByUserID(userID: number): Observable<any> {
-    return this.http.get(
-      apisConfigs.get.getTravelPlanByUserID + userID.toString(),
-      httpConfigs
-    );
+    return this.http.get(apisConfigs.get.getTravelPlanByUserID + userID.toString(), httpConfigs);
   }
 
   getTravelPlanByPlanCollabUserID(userID: number): Observable<any> {
@@ -34,20 +28,12 @@ export class TravelPlanService {
 
   createTravelPlan(travelPlan: TravelPlan): Observable<any> {
     const postData = JSON.stringify(travelPlan);
-    return this.http.post(
-      apisConfigs.post.createTravelPlan,
-      postData,
-      httpConfigs
-    );
+    return this.http.post(apisConfigs.post.createTravelPlan, postData, httpConfigs);
   }
 
   updateTravelPlanByTravelPlanID(travelPlan: TravelPlan): Observable<any> {
     const putData = JSON.stringify(travelPlan);
-    return this.http.put(
-      apisConfigs.put.updateTravelPlanByTravelPlanID,
-      putData,
-      httpConfigs
-    );
+    return this.http.put(apisConfigs.put.updateTravelPlanByTravelPlanID, putData, httpConfigs);
   }
 
   delTravelPlanByIDs(travelPlanID: number, userID: number): Observable<any> {
@@ -55,9 +41,6 @@ export class TravelPlanService {
       travelPlanID,
       userID
     };
-    return this.http.delete(
-      apisConfigs.delete.deleteTravelPlanByIDs,
-      httpConfigs
-    );
+    return this.http.delete(apisConfigs.delete.deleteTravelPlanByIDs, httpConfigs);
   }
 }
