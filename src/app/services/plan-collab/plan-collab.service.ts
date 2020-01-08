@@ -20,14 +20,19 @@ export class PlanCollabService {
 
   getPlanCollabUserDetailByTravelPlanID(travelPlanID: number): Observable<any> {
     return this.http.get(
-      apisConfigs.get.getPlanCollabUserDetailByTravelPlanID + travelPlanID.toString(),
+      apisConfigs.get.getPlanCollabUserDetailByTravelPlanID +
+        travelPlanID.toString(),
       httpConfigs
     );
   }
 
   addPlanCollab(planCollab: PlanCollab): Observable<any> {
     const postData = JSON.stringify(planCollab);
-    return this.http.post(apisConfigs.post.addPlanCollab, postData, httpConfigs);
+    return this.http.post(
+      apisConfigs.post.addPlanCollab,
+      postData,
+      httpConfigs
+    );
   }
 
   removePlanCollabByIds(travelPlanID: number, userID: number): Observable<any> {
@@ -35,6 +40,9 @@ export class PlanCollabService {
       travelPlanID,
       userID
     };
-    return this.http.delete(apisConfigs.delete.removePlanCollabByIds, httpConfigs);
+    return this.http.delete(
+      apisConfigs.delete.removePlanCollabByIds,
+      httpConfigs
+    );
   }
 }

@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{travelJournal.title}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let journal of journalList">
+      <ion-item (click)="presentAlertConfirm(journal)" button>
+        <ion-label>
+          <h3>{{journal.title}}</h3>
+        </ion-label>
+      </ion-item>
+    </ion-item>
+  </ion-list>
+</ion-content>

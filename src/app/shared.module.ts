@@ -8,7 +8,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CollaboratorModalComponent } from './components/collaborator-modal/collaborator-modal.component';
 
 @NgModule({
-  imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    IonicModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule
+  ],
   declarations: [CollaboratorModalComponent],
   exports: [CollaboratorModalComponent],
   entryComponents: [CollaboratorModalComponent]
