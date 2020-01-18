@@ -1,9 +1,25 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      Journal
+      PlanNGo
     </ion-title>
   </ion-toolbar>
+  <ion-progress-bar type="indeterminate" color="secondary" [hidden]="!loading"></ion-progress-bar>
 </ion-header>
-
-<ion-content></ion-content>
+<ion-content class="journalPage has-header" *ngIf="!loading">
+  <form [formGroup]="journalForm" (ngSubmit)="onSubmit(journalForm.value)" id="page-form4" class="list">
+    <ion-button id="camera" class="button button-positive button-block" (click)="getCamera()">Camera</ion-button>
+    <div id="page-container1">
+      <img class="image" src="{{image}}" alt="" />
+    </div>
+    <div id="page-container3">
+          <ion-select formControlName="wishListItem" *ngFor="let options of travelPlan" value="options.title" placeholder="Select Travel Plan">
+            <ion-select-option value="{{options.title}}">{{options.title}}</ion-select-option>
+          </ion-select>
+    </div>
+    <div id="page-container2">
+      <ion-textarea class="textArea" formControlName="desc" placeholder="Description"></ion-textarea>
+      <ion-button id="page-button2" class="button button-positive button-block" type="submit">Submit</ion-button>
+    </div>
+  </form>
+</ion-content>
