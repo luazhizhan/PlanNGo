@@ -1,16 +1,5 @@
 import { Injectable, ChangeDetectorRef } from "@angular/core";
-  Camera,
-  CameraOptions,
-  PictureSourceType
-} from "@ionic-native/camera/ngx";
-import { CameraService } from "../../services/camera/camera.service";
 import { HttpClient } from "@angular/common/http";
-import {
-  ActionSheetController,
-  ToastController,
-  Platform,
-  LoadingController
-} from "@ionic/angular";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 import { AuthService } from "../../services/auth/auth.service";
@@ -32,9 +21,17 @@ export class TravelJournalService {
     const data = JSON.stringify(travelJournal);
     if (type === 'update') {
       return this.http.put(apisConfigs.post.createTravelJournal, data, httpConfigs);
-    } else if ( type === 'create'){
+    } else if ( type === 'create') {
       return this.http.post(apisConfigs.post.createTravelJournal, data, httpConfigs);
     }
+  }
+
+  removeTravelJournal(data): Observable<any> {
+    httpConfigs.body = {
+      travelJournalID: data.travelJournalID,
+      userID: data.userID
+    };
+    return this.http.delete(apisConfigs.delete.removeTravelJournalByIDs, httpConfigs);
   }
 
   getWishListByTravelPlanID(travelPlanID) {

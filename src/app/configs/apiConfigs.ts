@@ -1,4 +1,5 @@
 const API_URL = 'https://elp-planngo.herokuapp.com/';
+//const API_URL = 'https://localhost:3000/';
 
 const apisConfigs = {
   get: {
@@ -21,7 +22,8 @@ const apisConfigs = {
   },
   delete: {
     deleteTravelPlanByIDs: API_URL + 'delete-travel-plan-by-ids',
-    removePlanCollabByIds: API_URL + 'remove-plan-collab-by-ids'
+    removePlanCollabByIds: API_URL + 'remove-plan-collab-by-ids',
+    removeTravelJournalByIDs: API_URL + 'remove-travel-journal-by-ids'
   }
 };
 
