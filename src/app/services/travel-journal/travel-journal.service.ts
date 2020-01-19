@@ -1,16 +1,16 @@
-import { Injectable, ChangeDetectorRef } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Injectable, ChangeDetectorRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { AuthService } from "../../services/auth/auth.service";
-import { UtilsService } from "../../services/utils/utils.service";
+import { AuthService } from '../../services/auth/auth.service';
+import { UtilsService } from '../../services/utils/utils.service';
 import { Observable } from 'rxjs';
 import TravelJournal from 'src/app/interfaces/travelJournal';
 import apisConfigs from 'src/app/configs/apiConfigs';
 import { httpConfigs } from 'src/app/configs/httpConfigs';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class TravelJournalService {
   constructor(
