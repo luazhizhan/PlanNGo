@@ -1,5 +1,4 @@
 const API_URL = 'https://elp-planngo.herokuapp.com/';
-//const API_URL = 'https://localhost:3000/';
 
 const apisConfigs = {
   get: {
