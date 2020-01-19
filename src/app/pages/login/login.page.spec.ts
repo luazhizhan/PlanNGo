@@ -12,7 +12,12 @@ describe('LoginPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule, HttpClientModule, IonicModule.forRoot()],
+      imports: [
+        ReactiveFormsModule,
+        RouterTestingModule,
+        HttpClientModule,
+        IonicModule.forRoot()
+      ],
       declarations: [LoginPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
