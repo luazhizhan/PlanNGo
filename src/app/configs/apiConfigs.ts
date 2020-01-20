@@ -21,7 +21,8 @@ const apisConfigs = {
   },
   delete: {
     deleteTravelPlanByIDs: API_URL + 'delete-travel-plan-by-ids',
-    removePlanCollabByIds: API_URL + 'remove-plan-collab-by-ids'
+    removePlanCollabByIds: API_URL + 'remove-plan-collab-by-ids',
+    removeTravelJournalByIDs: API_URL + 'remove-travel-journal-by-ids'
   }
 };
 
