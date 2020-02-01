@@ -5,6 +5,6 @@ export default interface TravelJournal {
 	imageID: number;
 	journalDetails: Blob;
 	timestamp: Date;
-	username: string;
+	userID: number;
 	image?: Blob;
 };

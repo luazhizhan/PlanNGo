@@ -4,19 +4,40 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>
-      {{travelJournal.title}}
+      <!-- {{travelJournal.title}} -->
     </ion-title>
+    <ion-buttons slot="end" [hidden]="!isOwner">
+      Edit
+    </ion-buttons>
   </ion-toolbar>
+  <ion-progress-bar
+    type="indeterminate"
+    color="secondary"
+    [hidden]="!loading"
+  ></ion-progress-bar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let journal of journalList">
-      <ion-item (click)="presentAlertConfirm(journal)" button>
-        <ion-label>
-          <h3>{{journal.title}}</h3>
-        </ion-label>
-      </ion-item>
+    <ion-card class="place-img" *ngFor="let journal of journalList">
+      <ion-item>
+      <ion-button (click)="presentAlertConfirm(journal)" slot="end"
+        >Add to wishlist</ion-button
+      >
     </ion-item>
+      <ion-slides pager="true" [options]="slideOpts">
+        <ion-slide *ngFor="let image of journal.image">
+          <img
+            src="{{image}}"
+            alt="{{journal.imageID}}"
+            class="place-img"
+          />
+        </ion-slide>
+      </ion-slides>
+
+      <ion-card-header>
+        <ion-card-title>{{journal.journalDetails}}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
   </ion-list>
 </ion-content>

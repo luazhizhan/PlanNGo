@@ -3,7 +3,12 @@
     overflow: hidden;
   }
   ion-segment {
-    padding: 5px;
+    padding: 6px;
+    height: 40px;
   }
+  ion-segment-button{
+    min-height: 10px;
+    font-size: 11px
+}
 
   

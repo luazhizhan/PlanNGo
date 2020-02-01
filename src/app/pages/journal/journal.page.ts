@@ -19,6 +19,8 @@ export class JournalPage {
 	journalList: TravelJournal[];
 	imageList: Image[];
 	loading = true;
+	filterValue = 'all';
+	categoryValue = 'place';
 	constructor(
 		private modalController: ModalController,
 		private authSvc: AuthService,
@@ -29,7 +31,9 @@ export class JournalPage {
 
 	async ngOnInit() {
 		this.user = this.authSvc.getUserInfo();
-		const journalParams = {};
+		const journalParams = {
+			//category: this.categoryValue
+		};
 		const imageParams = {};
 		this.fetchTravelJournal(journalParams, imageParams);
 	}
@@ -96,13 +100,37 @@ export class JournalPage {
 	};
 
 	segmentChanged(ev: any) {
-		if(ev.detail.value==='food'){
-			console.log(ev.detail.value)
-			const journalParams = {};
+		this.categoryValue = ev.detail.value;
+		const journalParams =
+			this.filterValue === 'personal'
+				? {
+						userID: this.user.userID,
+						category: this.categoryValue
+					}
+				: {
+						category: this.categoryValue
+					};
+		console.log(journalParams);
 		const imageParams = {};
-		this.journalList=[];
-			this.fetchTravelJournal(journalParams,imageParams);
-		}
-		console.log('Segment changed', ev.detail);
+		this.journalList = [];
+		this.fetchTravelJournal(journalParams, imageParams);
+	}
+
+	filterSegmentChanged(ev: any) {
+		this.filterValue = ev.detail.value;
+		this.categoryValue = 'place';
+		const journalParams =
+			this.filterValue === 'personal'
+				? {
+						userID: this.user.userID,
+						category: this.categoryValue
+					}
+				: {
+						category: this.categoryValue
+					};
+		console.log(journalParams);
+		const imageParams = {};
+		this.journalList = [];
+		this.fetchTravelJournal(journalParams, imageParams);
 	}
 }

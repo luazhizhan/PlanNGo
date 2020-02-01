@@ -15,32 +15,45 @@
   <!-- <ion-searchbar></ion-searchbar>
   <ion-button (click)="openModal()" color="primary" expand="full">Open Modal</ion-button> -->
   <ion-list>
-    <ion-list-header>
-      <ion-label>Travel Journal</ion-label>
-    </ion-list-header>
-    <!-- <ion-button fill="clear" class="journal-btn sc-ion-label-ios-h sc-ion-label-ios-s ios hydrated">Place of interest</ion-button>
-    <ion-button fill="clear" class="journal-btn sc-ion-label-ios-h sc-ion-label-ios-s ios hydrated">Food</ion-button> -->
-    
+    <ion-segment scrollable (ionChange)="filterSegmentChanged($event)">
+      <ion-segment-button checked value="all">
+        <ion-label>All</ion-label>
+        <ion-icon name="people"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="personal">
+        <ion-label>Personal</ion-label>
+        <ion-icon name="person"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
 
-<ion-segment scrollable (ionChange)="segmentChanged($event)">
-  <ion-segment-button checked value="place">
-    <ion-label>Place of interest</ion-label>
-    <ion-icon name="pin"></ion-icon>
-  </ion-segment-button>
-  <ion-segment-button value="food">
-    <ion-label>Food</ion-label>
-    <ion-icon name="pizza"></ion-icon>
-  </ion-segment-button>
-</ion-segment>
+    <ion-segment scrollable (ionChange)="segmentChanged($event)" [(ngModel)]="categoryValue">
+      <ion-segment-button value="place">
+        <ion-label>Place of interest</ion-label>
+        <ion-icon name="pin"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="food">
+        <ion-label>Food</ion-label>
+        <ion-icon name="pizza"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
 
-<!-- <ion-item *ngFor="let journal of journalList"> -->
-<ion-card class="place-img" *ngFor="let journal of journalList" (click)="travelJournalClick(journal)" button>
-  <img src="{{journal.image}}" alt={{journal.imageID}} class="place-img"/>
-  <ion-card-header>
-    <ion-card-title>{{journal.journalDetails}}</ion-card-title>
-  </ion-card-header>
-</ion-card>
-<!-- </ion-item> -->
+    <!-- <ion-item *ngFor="let journal of journalList"> -->
+    <ion-card
+      class="place-img"
+      *ngFor="let journal of journalList"
+      (click)="travelJournalClick(journal)"
+      button
+    >
+      <img
+        src="{{journal.image}}"
+        alt="{{journal.imageID}}"
+        class="place-img"
+      />
+      <ion-card-header>
+        <ion-card-title>{{journal.journalDetails}}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    <!-- </ion-item> -->
     <!-- <ion-item *ngFor="let journal of journalList">
       <ion-item (click)="travelJournalClick(journal)" button>
       <ion-item>
