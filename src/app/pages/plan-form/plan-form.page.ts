@@ -40,8 +40,7 @@ export class PlanFormPage implements OnInit {
         desc: ['', [Validators.minLength(3)]],
         flightCode: ['', []],
         boardingTime: ['', []],
-        seatInfo: ['', []],
-        flightReminder: ['', []]
+        seatInfo: ['', []]
       },
       {}
     );
@@ -61,8 +60,7 @@ export class PlanFormPage implements OnInit {
           desc: this.travelPlan.desc,
           flightCode: this.travelPlan.flightCode,
           boardingTime: this.travelPlan.boardingTime,
-          seatInfo: this.travelPlan.seatInfo,
-          flightReminder: this.travelPlan.flightReminder
+          seatInfo: this.travelPlan.seatInfo
         });
         this.taskName = 'Update';
       } else {
@@ -112,7 +110,6 @@ export class PlanFormPage implements OnInit {
       flightCode: values.flightCode,
       boardingTime: values.boardingTime,
       seatInfo: values.seatInfo,
-      flightReminder: values.flightReminder,
       userID
     };
   }

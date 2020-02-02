@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  Camera,
-  CameraOptions,
-  PictureSourceType
-} from '@ionic-native/camera/ngx';
+import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 import { HttpClient } from '@angular/common/http';
 import { Platform } from '@ionic/angular';
 
@@ -13,11 +9,7 @@ import { Platform } from '@ionic/angular';
 export class CameraService {
   capturedPicURL: string;
 
-  constructor(
-    private http: HttpClient,
-    private camera: Camera,
-    private platform: Platform
-  ) {}
+  constructor(private http: HttpClient, private camera: Camera, private platform: Platform) {}
 
   async takePicture(sourceType: PictureSourceType) {
     const cameraOptions: CameraOptions = {
@@ -32,16 +24,11 @@ export class CameraService {
       .then(async imageData => {
         if (this.platform.is('android')) {
           const base64Image = 'data:image/jpeg;base64,' + imageData;
-          const currentFileName = imageData.substring(
-            imageData.lastIndexOf('/') + 1
-          );
-          const currentPath = imageData.substring(
-            0,
-            imageData.lastIndexOf('/')
-          );
+          const currentFileName = imageData.substring(imageData.lastIndexOf('/') + 1);
+          const currentPath = imageData.substring(0, imageData.lastIndexOf('/'));
           const fileData = [
             {
-              originalData: base64Image,
+              originalData: base64Image
             }
           ];
           return fileData;
