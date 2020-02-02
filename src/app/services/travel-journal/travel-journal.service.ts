@@ -13,15 +13,13 @@ import { httpConfigs } from 'src/app/configs/httpConfigs';
   providedIn: 'root'
 })
 export class TravelJournalService {
-  constructor(
-    private http: HttpClient
-  ) {}
+  constructor(private http: HttpClient) {}
 
   travelJournalSubmit(travelJournal: TravelJournal, type): Observable<any> {
     const data = JSON.stringify(travelJournal);
     if (type === 'update') {
       return this.http.put(apisConfigs.post.createTravelJournal, data, httpConfigs);
-    } else if ( type === 'create') {
+    } else if (type === 'create') {
       return this.http.post(apisConfigs.post.createTravelJournal, data, httpConfigs);
     }
   }

@@ -19,6 +19,10 @@ export class AuthService {
     return this.http.post(apisConfigs.post.login, postData, httpConfigs);
   }
 
+  logout(): void {
+    localStorage.removeItem('user');
+  }
+
   getUserByUsernameOrEmail(username: string, email: string): Observable<any> {
     username = !username ? null : username;
     email = !email ? null : email;

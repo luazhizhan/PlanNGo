@@ -10,7 +10,11 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="authForm" (ngSubmit)="loginAuth(authForm.value)">
+  <form
+    [formGroup]="authForm"
+    (ngSubmit)="loginAuth(authForm.value)"
+    (keydown.enter)="enterKeyDown(authForm.value)"
+  >
     <ion-item>
       <ion-label position="stacked">Username</ion-label>
       <ion-input required formControlName="username" type="text"></ion-input>
@@ -19,7 +23,9 @@
       <ion-label position="stacked">Password</ion-label>
       <ion-input required formControlName="pwd" type="password"></ion-input>
     </ion-item>
-    <ion-button expand="block" [disabled]="btnDisabled" type="submit">Login</ion-button>
+    <ion-button expand="block" [disabled]="btnDisabled" type="submit"
+      >Login</ion-button
+    >
     <ion-button
       [routerLink]="['/register/']"
       fill="clear"

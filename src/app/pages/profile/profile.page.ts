@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -6,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.page.scss']
 })
 export class ProfilePage implements OnInit {
-  constructor() {}
+  constructor(private navCtrl: NavController, private authSvc: AuthService) {}
 
   ngOnInit() {}
+
+  logout() {
+    this.authSvc.logout();
+    this.navCtrl.navigateForward('/');
+  }
 }
