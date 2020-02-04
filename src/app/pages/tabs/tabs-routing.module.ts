@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import { AuthGuard } from '../../auth.guard';
 
 const routes: Routes = [
   {
     path: 'tabs',
     component: TabsPage,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'home',
         children: [
           {
             path: '',
-            loadChildren: () =>
-              import('../home/home.module').then(m => m.HomePageModule)
+            loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
           }
         ]
       },
@@ -23,7 +24,12 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () =>
-              import('../plan/plan.module').then(m => m.PlanPageModule)
+              import('../my-plan-list/my-plan-list.module').then(m => m.MyPlanListPageModule)
+          },
+          {
+            path: 'plan-form',
+            loadChildren: () =>
+              import('../plan-form/plan-form.module').then(m => m.PlanFormPageModule)
           }
         ]
       },
@@ -32,8 +38,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () =>
-              import('../journal/journal.module').then(m => m.JournalPageModule)
+            loadChildren: () => import('../journal/journal.module').then(m => m.JournalPageModule)
           }
         ]
       },
@@ -42,8 +47,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () =>
-              import('../profile/profile.module').then(m => m.ProfilePageModule)
+            loadChildren: () => import('../profile/profile.module').then(m => m.ProfilePageModule)
           }
         ]
       },
@@ -67,6 +71,7 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: '/tabs/home',
+    canActivate: [AuthGuard],
     pathMatch: 'full'
   }
 ];

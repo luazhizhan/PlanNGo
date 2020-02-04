@@ -2,6 +2,11 @@
   <ion-toolbar color="primary">
     <ion-title>PlanNGo</ion-title>
   </ion-toolbar>
+  <ion-progress-bar
+    type="indeterminate"
+    color="secondary"
+    [hidden]="!btnDisabled"
+  ></ion-progress-bar>
 </ion-header>
 
 <ion-content>
@@ -14,19 +19,21 @@
       <ion-label position="stacked">Password</ion-label>
       <ion-input required formControlName="pwd" type="password"></ion-input>
     </ion-item>
-    <ion-button expand="block" type="submit" color="success">Login</ion-button>
+    <ion-button expand="block" [disabled]="btnDisabled" type="submit">Login</ion-button>
     <ion-button
       [routerLink]="['/register/']"
       fill="clear"
       expand="block"
-      style="text-transform: none;"
+      [disabled]="btnDisabled"
+      style="text-transform:capitalize;"
       >Register an account</ion-button
     >
     <ion-button
       [routerLink]="['/register/']"
       fill="clear"
       expand="block"
-      style="text-transform: none;"
+      [disabled]="btnDisabled"
+      style="text-transform: capitalize;"
       >Reset password</ion-button
     >
   </form>

@@ -45,13 +45,15 @@ npm start
 
 ## Heroku server Node.JS application
 
-- The heroku server Node.JS application is location at `server/elp-planngo` folder. This folder is a [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules). This folder will be empty after you clone this repo.
+- The heroku server Node.JS application is location at `server/elp-planngo` folder. This folder is a [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules). A submodule is a git repository in another git repository. This folder will be empty after you clone this repo.
 
 - You will need to go to the heroku server folder to get all the files. This can be done using the command below.
 
 ```bash
 git submodule update --init
 ```
+
+- You can use the same commands to commit and push changes you have made in this folder just like any git repository. The githhub repository (root folder) will track the changes that were made in the heroku git repository.
 
 ## Workflow
 
