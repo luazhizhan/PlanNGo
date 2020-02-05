@@ -9,6 +9,8 @@ import { UtilsService } from '../../services/utils/utils.service';
 import User from 'src/app/interfaces/user';
 import TravelPlan from 'src/app/interfaces/travelPlan';
 import { CollaboratorModalComponent } from '../../components/collaborator-modal/collaborator-modal.component';
+import { WishlistmainPage } from '../wishlistmain/wishlistmain.page';
+
 
 @Component({
   selector: 'app-plan-form',
@@ -21,6 +23,7 @@ export class PlanFormPage implements OnInit {
   isCollab: boolean;
   user: User;
   travelPlan: TravelPlan;
+  private name;
 
   constructor(
     private modalCtrl: ModalController,
@@ -83,6 +86,14 @@ export class PlanFormPage implements OnInit {
     return await modal.present();
   }
 
+  async toWishPage() {
+    console.log("testing 123");
+    const modal = await this.modalCtrl.create({
+      component: WishlistmainPage
+    });
+    console.log("test 2");
+    return await modal.present();
+  }
   async onPlanSubmit(values: TravelPlan) {
     if (this.planForm.invalid) {
       const toast = await this.utilsSvc.presentToast(
@@ -147,4 +158,16 @@ export class PlanFormPage implements OnInit {
       () => loadingPopup.dismiss()
     );
   }
+
+
+  // goTowishlistMainPage()
+  // {
+  //   this.navCtrl.push(WishlistmainPage,{});
+  // }
+  //gotowishlistpage(){
+    //this.navCtrl.push(WishlistMainPage);
+  //}
+  //async gotowishlistpage(){
+
+  //}
 }

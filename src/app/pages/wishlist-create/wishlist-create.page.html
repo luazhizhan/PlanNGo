@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{taskName}} Wishlist</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form>
+    <ion-item>
+      <ion-label>
+        Category
+      </ion-label>
+      <ion-select name="">
+        <ion-select-option>
+          Places Of Interest
+        </ion-select-option>
+        <ion-select-option>
+          Food
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        Name:
+      </ion-label>
+        <ion-input></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        Description:
+      </ion-label>
+        <ion-input></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        Location:
+      </ion-label>
+        <ion-input></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        URL:
+      </ion-label>
+        <ion-input placeholder="Optional"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        Opening Time:
+      </ion-label>
+        <ion-input></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        Price:
+      </ion-label>
+        <ion-input placeholder="Optional"></ion-input>
+    </ion-item>
+    <ion-button color="primary" type="submit" style="text-transform:capitalize;" expand="block" (click)="onWishSubmit(wishForm.value)">
+      {{taskName}}
+    </ion-button>
+  </form>
+</ion-content>

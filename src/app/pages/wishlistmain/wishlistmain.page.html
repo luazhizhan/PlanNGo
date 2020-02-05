@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      Wishlist Main
+    </ion-title>
+    
+  </ion-toolbar>
+</ion-header>
+<ion-content padding id="page1">
+  <form id="wishlistMain-form1">
+    <ion-item id="wishlistMain-select1">
+      <ion-label>
+        Category
+      </ion-label>
+      <ion-select name="">
+        <ion-select-option>
+          Places Of Interest
+        </ion-select-option>
+        <ion-select-option>
+          Food
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </form>
+  <ion-item-sliding *ngFor let wishlist of wishlists>
+    <ion-item>
+      {{wishlist}}
+    </ion-item>
+    <ion-item-options side="end">
+      <ion-item-option color="danger">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-content>
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button [routerLink]="['/tabs/plan/wishlist_create/']">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

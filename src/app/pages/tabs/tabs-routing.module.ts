@@ -30,6 +30,16 @@ const routes: Routes = [
             path: 'plan-form',
             loadChildren: () =>
               import('../plan-form/plan-form.module').then(m => m.PlanFormPageModule)
+          },
+          {
+            path: 'wishlist_main',
+            loadChildren: () =>
+              import('../wishlistmain/wishlistmain.module').then(m => m.WishlistmainPageModule)
+          },
+          {
+            path: 'wishlist_create',
+            loadChildren: () =>
+              import('../wishlist-create/wishlist-create.module').then(m => m.WishlistCreatePageModule)
           }
         ]
       },
