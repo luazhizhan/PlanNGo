@@ -12,6 +12,15 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //import { CreateWishlistPage } from './pages/wishlist/create-wishlist';
+<<<<<<< Updated upstream
+=======
+
+import { Camera } from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/file/ngx';
+
+//import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FilePath } from '@ionic-native/file-path/ngx';
+>>>>>>> Stashed changes
 
 @NgModule({
   declarations: [AppComponent],

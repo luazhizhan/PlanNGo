@@ -14,6 +14,10 @@ const apisConfigs = {
     login: API_URL + 'login',
     createTravelPlan: API_URL + 'create-travel-plan',
     addPlanCollab: API_URL + 'add-plan-collab',
+<<<<<<< Updated upstream
+=======
+    createTravelJournal: API_URL + 'create-travel-journal',
+>>>>>>> Stashed changes
     createWishList: API_URL + 'create-wish-list'
   },
   put: {
