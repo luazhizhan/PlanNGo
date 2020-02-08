@@ -22,7 +22,7 @@
       </ion-select>
     </ion-item>
   </form>
-  <ion-item-sliding *ngFor let wishlist of wishlists>
+  <ion-item-sliding *ngFor="let wishlist of (wishlists | async)">
     <ion-item>
       {{wishlist}}
     </ion-item>
