@@ -12,22 +12,22 @@
   <ion-button (click)="openModal()" color="primary" expand="full">Open Modal</ion-button> -->
   <ion-list>
     <ion-segment scrollable (ionChange)="filterSegmentChanged($event)">
-      <ion-segment-button checked value="all">
+      <ion-segment-button checked value="all" layout="icon-start">
         <ion-label>All</ion-label>
         <ion-icon name="people"></ion-icon>
       </ion-segment-button>
-      <ion-segment-button value="personal">
+      <ion-segment-button value="personal" layout="icon-start">
         <ion-label>Personal</ion-label>
         <ion-icon name="person"></ion-icon>
       </ion-segment-button>
     </ion-segment>
 
     <ion-segment scrollable (ionChange)="segmentChanged($event)" [(ngModel)]="categoryValue">
-      <ion-segment-button value="place">
+      <ion-segment-button value="place" layout="icon-start">
         <ion-label>Place of interest</ion-label>
         <ion-icon name="pin"></ion-icon>
       </ion-segment-button>
-      <ion-segment-button value="food">
+      <ion-segment-button value="food" layout="icon-start">
         <ion-label>Food</ion-label>
         <ion-icon name="pizza"></ion-icon>
       </ion-segment-button>
