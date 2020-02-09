@@ -1,8 +1,12 @@
 export default interface TravelJournal {
   travelJournalID?: number;
-  wishListItem: string;
-  desc: string;
-  userID?: number;
+  wishListItem?: string;
+  location?: string;
   imageID?: number;
-  image?: any;
+  journalDetails?: string;
+  timestamp?: Date;
+  userID?: number;
+  image?: Blob;
+  category?: string;
+  desc: string;
 }

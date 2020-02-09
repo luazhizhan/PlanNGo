@@ -35,4 +35,20 @@ export class TravelJournalService {
   getWishListByTravelPlanID(travelPlanID) {
     return this.http.get(apisConfigs.get.getWishList + travelPlanID.toString(), httpConfigs);
   }
+
+  getTravelJournal(params: Object): Observable<any> {
+    if (Object.keys(params).length > 0) {
+      let query = apisConfigs.get.getTravelJournal;
+      for (let param in params) {
+        if (!query.includes('?')) {
+          query += `?${param}=${params[param]}`;
+        } else {
+          query += `&${param}=${params[param]}`;
+        }
+      }
+      return this.http.get(query, httpConfigs);
+    } else {
+      return this.http.get(apisConfigs.get.getTravelJournal, httpConfigs);
+    }
+  }
 }
