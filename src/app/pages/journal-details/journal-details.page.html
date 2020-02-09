@@ -26,7 +26,7 @@
       >
     </ion-item>
       <ion-slides pager="true" [options]="slideOpts">
-        <ion-slide *ngFor="let image of journal.image">
+        <ion-slide *ngFor="let image of journal.image[0]">
           <img
             src="{{image}}"
             alt="{{journal.imageID}}"
@@ -36,8 +36,10 @@
       </ion-slides>
 
       <ion-card-header>
-        <ion-card-title>{{journal.journalDetails}}</ion-card-title>
+        <ion-card-subtitle>Journal Created: {{journal.timestamp}}</ion-card-subtitle>
+        <ion-card-title>{{journal.wishListItem}}</ion-card-title>
       </ion-card-header>
+      <ion-card-content>{{journal.journalDetails}}</ion-card-content>
     </ion-card>
   </ion-list>
 </ion-content>

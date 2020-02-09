@@ -40,7 +40,7 @@ export class JournalDetailsPage implements OnInit {
 		this.journalForm = this.formBuilder.group(
 			{
 				travelJournalID: [ '', [ Validators.required ] ],
-				title: [ '', [ Validators.required ] ],
+				wishListItem: [ '', [ Validators.required ] ],
 				location: [ '', [ Validators.required ] ],
 				imageID: [ '', [ Validators.required ] ],
 				journalDetails: [ '', [ Validators.required ] ],
@@ -62,13 +62,13 @@ export class JournalDetailsPage implements OnInit {
 				this.travelJournal = JSON.parse(params.journal);
 				this.journalForm.setValue({
 					travelJournalID: this.travelJournal.travelJournalID,
-					title: '',
+					wishListItem: '',
 					location: '',
-					imageID: this.travelJournal.imageID,
-					journalDetails: this.travelJournal.journalDetails,
-					timestamp: this.travelJournal.timestamp,
+					imageID: '',
+					journalDetails: '',
+					timestamp: '',
 					username: '',
-					image: this.travelJournal.image
+					image: ''
 				});
 			}
 			const journalParams = {
@@ -84,23 +84,55 @@ export class JournalDetailsPage implements OnInit {
 			// this.imageList = imageList.results;
 			const images = imageList.results;
 			this.imageList = images.map((image) => {
-				const buf = image.image.data;
+				//const buf = image.image.data;
+				const buf = image.image.split(`,`);
+				let index = 0;
 				return {
 					imageID: image.imageID,
-					image: this.arrayBufferToBase64(buf),
+					image: buf
+						.map((imageBuf) => {
+							if (imageBuf.includes('data:image/jpeg;base64')) {
+								imageBuf = imageBuf.includes('[')
+									? `${imageBuf.substring(imageBuf.indexOf(`[`) + 1)},${buf[index + 1]}`
+									: buf[index + 1].includes(']')
+										? `${imageBuf},${buf[index + 1].substring(0, buf[index + 1].indexOf(']') - 1)}`
+										: `${imageBuf},${buf[index + 1]}`;
+								index += 2;
+								return imageBuf.replace(/\"/g, '');
+							}
+						})
+						.filter((image) => image !== undefined),
 					description: image.description
 				};
+				// return {
+				// 	imageID: image.imageID,
+				// 	image: this.arrayBufferToBase64(buf),
+				// 	description: image.description
+				// };
 			});
 			this.travelJournalSvc.getTravelJournal(journalParams).subscribe((journalList) => {
 				this.journalList = journalList.results.map((journal) => {
-          this.isOwner = journal.userID === this.user.userID ? true : false;
+					this.isOwner = journal.userID === this.user.userID ? true : false;
+					const date = new Date(journal.timestamp);
+					const day = date.getDate();
+					const month = date.getMonth() + 1;
+					const year = date.getFullYear();
 					return {
 						...journal,
+						timestamp: `${day}/${month}/${year} ${date.toLocaleTimeString()}`,
 						image: this.imageList
 							.filter((image) => image.imageID === journal.imageID)
 							.map((obj) => obj.image)
 					};
 				});
+				// const wishListParams={
+				// 	wishListID:this.journalList.map((journal)=>journal.wishListID)
+				// }
+				// this.wishListService.getWishList(wishListParams).subscribe((wishListArr)=>{
+				// 	this.wishList = wishListArr.results.map((wishList)=>{
+				// 		this.wishList=wishList;
+				// 	})
+				// })
 				this.loading = false;
 			}, async (e) => await this.utilsSvc.presentAsyncErrorToast(e));
 		}, async (e) => await this.utilsSvc.presentAsyncErrorToast(e));
@@ -118,16 +150,26 @@ export class JournalDetailsPage implements OnInit {
 	};
 
 	setWishListObj(userID: number, values: TravelJournal) {
+		this.loading = true;
 		this.wishList = {
-			userID,
+			category: values.category,
+			name: values.wishListItem,
+			description: values.journalDetails,
+			url: '',
+			price: 0,
+			location: '',
+			openingTime: '',
+			travelPlanID: 1
+			//userID,
+
 			// description: values.
-			itineraryPlace: values.location,
-			likes: 1,
-			status: 0
+			// itineraryPlace: values.location,
+			// likes: 1,
+			// status: 0
 		};
 	}
 
-	async presentAlertConfirm(journal: TravelJournal) {
+	async presentAlertConfirm(journal: TravelJournal, loadingPopup: HTMLIonLoadingElement) {
 		const alert = await this.alertController.create({
 			header: 'Confirm',
 			message: 'Do you want to add this itinerary to your wishlist?',
@@ -141,21 +183,17 @@ export class JournalDetailsPage implements OnInit {
 					text: 'Confirm',
 					handler: () => {
 						this.setWishListObj(this.user.userID, journal);
-						this.wishListService
-							.createWishList(this.wishList)
-							.subscribe
-							// async result => {
-							//   await this.utilsSvc.presentStatusToast(
-							// 	result.travelPlanId,
-							// 	'Travel plan created successfully'
-							//   );
-							//   if (result.travelPlanId) {
-							// 	this.navCtrl.navigateRoot('/tabs/plan');
-							//   }
-							// },
-							// async e => await this.utilsSvc.presentAsyncErrorToast(e),
-							// () => loadingPopup.dismiss()
-							();
+						this.wishListService.createWishList(this.wishList).subscribe(
+							async (result) => {
+								await this.utilsSvc.presentStatusToast(result, 'Added to wishlist successfully');
+								this.loading = false;
+							},
+							async (e) => {
+								await this.utilsSvc.presentAsyncErrorToast(e);
+								this.loading = false;
+							},
+							() => loadingPopup.dismiss()
+						);
 					}
 				}
 			]

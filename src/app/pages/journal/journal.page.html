@@ -45,12 +45,13 @@
       button
     >
       <img
-        src="{{journal.image}}"
+        src="{{journal.image[0][0]}}"
         alt="{{journal.imageID}}"
         class="place-img"
       />
       <ion-card-header>
-        <ion-card-title>{{journal.journalDetails}}</ion-card-title>
+        <ion-card-title>{{journal.wishListItem}}</ion-card-title>
+        <ion-card-subtitle>{{journal.timestamp}}</ion-card-subtitle>
       </ion-card-header>
     </ion-card>
     <!-- </ion-item> -->

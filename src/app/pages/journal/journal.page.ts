@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { ImageService } from '../../services/image/image.service';
 import Image from 'src/app/interfaces/image';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-journal',
@@ -22,7 +23,6 @@ export class JournalPage {
 	filterValue = 'all';
 	categoryValue = 'place';
 	constructor(
-		private modalController: ModalController,
 		private authSvc: AuthService,
 		private travelJournalSvc: TravelJournalService,
 		private utilsSvc: UtilsService,
@@ -32,7 +32,7 @@ export class JournalPage {
 	async ngOnInit() {
 		this.user = this.authSvc.getUserInfo();
 		const journalParams = {
-			//category: this.categoryValue
+			category: this.categoryValue
 		};
 		const imageParams = {};
 		this.fetchTravelJournal(journalParams, imageParams);
@@ -44,17 +44,42 @@ export class JournalPage {
 			// this.imageList = imageList.results;
 			const images = imageList.results;
 			this.imageList = images.map((image) => {
-				const buf = image.image.data;
+				// const buf = image.image.data;
+				const buf = image.image.split(`,`);
+				let index = 0;
+				// return
+				// {
+				// 	imageID: image.imageID,
+
+				// 	description: image.description
+				// }
 				return {
 					imageID: image.imageID,
-					image: this.arrayBufferToBase64(buf),
+					image: buf
+						.map((imageBuf) => {
+							if (imageBuf.includes('data:image/jpeg;base64')) {
+								imageBuf = imageBuf.includes('[')
+									? `${imageBuf.substring(imageBuf.indexOf(`[`) + 1)},${buf[index + 1]}`
+									: buf[index + 1].includes(']')
+										? `${imageBuf},${buf[index + 1].substring(0, buf[index + 1].indexOf(']') - 1)}`
+										: `${imageBuf},${buf[index + 1]}`;
+								index += 2;
+								return imageBuf.replace(/\"/g, '');
+							}
+						})
+						.filter((image) => image != undefined),
 					description: image.description
 				};
 			});
 			this.travelJournalSvc.getTravelJournal(journalParams).subscribe((journalList) => {
 				this.journalList = journalList.results.map((journal) => {
+					const date = new Date(journal.timestamp);
+					const day = date.getDate();
+					const month = date.getMonth() + 1;
+					const year = date.getFullYear();
 					return {
 						...journal,
+						timestamp: `${day}/${month}/${year} ${date.toLocaleTimeString()}`,
 						image: this.imageList
 							.filter((image) => image.imageID === journal.imageID)
 							.map((obj) => obj.image)
@@ -68,7 +93,9 @@ export class JournalPage {
 	async travelJournalClick(travelJournal: TravelJournal) {
 		this.utilsSvc.navigateForward(
 			{
-				journal: JSON.stringify(travelJournal)
+				journal: JSON.stringify({
+					travelJournalID:travelJournal.travelJournalID
+				})
 			},
 			'/tabs/journal/journal-details/'
 		);
@@ -79,13 +106,6 @@ export class JournalPage {
 		// 	this.journalList = journalList.results;
 		// 	this.loading = false;
 		// }, async (e) => await this.utilsSvc.presentAsyncErrorToast(e));
-	}
-
-	async openModal() {
-		const modal = await this.modalController.create({
-			component: JournalFilterPage
-		});
-		return await modal.present();
 	}
 
 	arrayBufferToBase64 = (buffer) => {
@@ -110,7 +130,6 @@ export class JournalPage {
 				: {
 						category: this.categoryValue
 					};
-		console.log(journalParams);
 		const imageParams = {};
 		this.journalList = [];
 		this.fetchTravelJournal(journalParams, imageParams);
@@ -128,7 +147,6 @@ export class JournalPage {
 				: {
 						category: this.categoryValue
 					};
-		console.log(journalParams);
 		const imageParams = {};
 		this.journalList = [];
 		this.fetchTravelJournal(journalParams, imageParams);
