@@ -1,181 +1,157 @@
-
-import { Component, OnInit } from '@angular/core';
-import { Camera } from '@ionic-native/camera/ngx';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
-import { CameraService } from '../../services/camera/camera.service';
-import { ActionSheetController, Platform } from '@ionic/angular';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component } from '@angular/core';
+import User from 'src/app/interfaces/user';
+import TravelJournal from 'src/app/interfaces/travelJournal';
+import { TravelJournalService } from '../../services/travel-journal/travel-journal.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { UtilsService } from '../../services/utils/utils.service';
-import { TravelPlanService } from '../../services/travel-plan/travel-plan.service';
-import { TravelJournalService } from '../../services/travel-journal/travel-journal.service';
-import User from 'src/app/interfaces/user';
-import TravelPlan from 'src/app/interfaces/travelPlan';
-import TravelJournal from 'src/app/interfaces/travelJournal';
+import { ImageService } from '../../services/image/image.service';
+import Image from 'src/app/interfaces/image';
 
 @Component({
   selector: 'app-journal',
   templateUrl: 'journal.page.html',
   styleUrls: ['journal.page.scss']
 })
-export class JournalPage implements OnInit {
-  imageArr: any[] = [];
-  imageObj: any;
-
-  journalForm: FormGroup;
-  travelPlanID: string;
-  // travelPlan: TravelPlan[];
-  travelPlan: TravelPlan[];
-
+export class JournalPage {
   user: User;
+  journalList: TravelJournal[];
+  imageList: Image[];
   loading = true;
-
-  travelJournal: TravelJournal;
-  wishList: any;
-
-  categoryArr: any[] = ['Places of Interest', 'Food'];
+  filterValue = 'all';
+  categoryValue = 'place';
   constructor(
-    private cameraService: CameraService,
-    private travelPlanSvc: TravelPlanService,
-    private travelJournalSvc: TravelJournalService,
     private authSvc: AuthService,
+    private travelJournalSvc: TravelJournalService,
     private utilsSvc: UtilsService,
-    private camera: Camera,
-    private imagePicker: ImagePicker,
-    private actionSheetController: ActionSheetController
+    private imageSvc: ImageService
   ) {}
 
   async ngOnInit() {
-    this.journalForm = this.createForm();
-
     this.user = this.authSvc.getUserInfo();
-
-    this.travelPlanSvc
-      .getTravelPlansByUserID(this.user.userID)
-      .subscribe(res => {
-        if (res && res.results) {
-          this.travelPlan = res.results;
-          this.loading = false;
-        }
-      });
-
-    this.journalForm.setValue({
-      wishListItem: 'test',
-      desc: '3+1 Image',
-      category: ''
-    });
-    this.journalForm.updateValueAndValidity();
-  }
-
-  createForm() {
-    return new FormGroup({
-      wishListItem: new FormControl(''),
-      desc: new FormControl(''),
-      category: new FormControl('')
-    });
-  }
-
-  setTravelJournalObj(
-    travelJournalID: number,
-    userID: number,
-    imageID: number,
-    values: TravelJournal
-  ) {
-    this.travelJournal = {
-      wishListItem: values.wishListItem,
-      desc: values.desc,
-      image: JSON.stringify(this.imageArr),
-      travelJournalID,
-      userID,
-      imageID,
-      category: values.category
+    const journalParams = {
+      category: this.categoryValue
     };
+    const imageParams = {};
+    this.fetchTravelJournal(journalParams, imageParams);
   }
 
-  onDelete(travelJournalID) {
-    const payload = {
-      travelJournalID,
-      userID: this.user.userID
-    };
-    this.travelJournalSvc.removeTravelJournal(payload).subscribe(
-      async result => {
-        await this.utilsSvc.presentStatusToast(
-          result,
-          'Travel Journal has been deleted successfully'
+  async fetchTravelJournal(journalParams, imageParams) {
+    this.loading = true;
+    this.imageSvc.getImage(imageParams).subscribe(
+      imageList => {
+        // this.imageList = imageList.results;
+        const images = imageList.results;
+        this.imageList = images.map(image => {
+          // const buf = image.image.data;
+          const buf = image.image.split(`,`);
+          let index = 0;
+          // return
+          // {
+          // 	imageID: image.imageID,
+
+          // 	description: image.description
+          // }
+          return {
+            imageID: image.imageID,
+            image: buf
+              .map(imageBuf => {
+                if (imageBuf.includes('data:image/jpeg;base64')) {
+                  imageBuf = imageBuf.includes('[')
+                    ? `${imageBuf.substring(imageBuf.indexOf(`[`) + 1)},${buf[index + 1]}`
+                    : buf[index + 1].includes(']')
+                    ? `${imageBuf},${buf[index + 1].substring(0, buf[index + 1].indexOf(']') - 1)}`
+                    : `${imageBuf},${buf[index + 1]}`;
+                  index += 2;
+                  return imageBuf.replace(/\"/g, '');
+                }
+              })
+              .filter(image => image != undefined),
+            description: image.description
+          };
+        });
+        this.travelJournalSvc.getTravelJournal(journalParams).subscribe(
+          journalList => {
+            this.journalList = journalList.results.map(journal => {
+              const date = new Date(journal.timestamp);
+              const day = date.getDate();
+              const month = date.getMonth() + 1;
+              const year = date.getFullYear();
+              return {
+                ...journal,
+                timestamp: `${day}/${month}/${year} ${date.toLocaleTimeString()}`,
+                image: this.imageList
+                  .filter(image => image.imageID === journal.imageID)
+                  .map(obj => obj.image)
+              };
+            });
+            this.loading = false;
+          },
+          async e => await this.utilsSvc.presentAsyncErrorToast(e)
         );
       },
       async e => await this.utilsSvc.presentAsyncErrorToast(e)
     );
   }
 
-  onSubmit(values: TravelJournal) {
-    this.setTravelJournalObj(undefined, this.user.userID, undefined, values);
-    this.travelJournalSvc
-      .travelJournalSubmit(this.travelJournal, 'create')
-      .subscribe(
-        async result => {
-          await this.utilsSvc.presentStatusToast(
-            result,
-            'Travel Journal Has been created successfully'
-          );
-        },
-        async e => await this.utilsSvc.presentAsyncErrorToast(e)
-      );
+  async travelJournalClick(travelJournal: TravelJournal) {
+    this.utilsSvc.navigateForward(
+      {
+        journal: JSON.stringify({
+          travelJournalID: travelJournal.travelJournalID
+        })
+      },
+      '/tabs/journal/journal-details/'
+    );
+    // const params = {
+    // 	travelJournalID:journal.travelJournalID
+    // };
+    // this.travelJournalSvc.getTravelJournal(params).subscribe((journalList) => {
+    // 	this.journalList = journalList.results;
+    // 	this.loading = false;
+    // }, async (e) => await this.utilsSvc.presentAsyncErrorToast(e));
   }
 
-  async getCamera() {
-    if(this.imageArr.length < 4) {
-      const actionSheet = await this.actionSheetController.create({
-        header: 'Select Image source',
-        buttons: [
-          {
-            text: 'Pick from Gallery',
-            handler: () => {
-              const options = {
-                maximumImagesCount: 4,
-                width: 200,
-                quality: 100,
-                outputType: 1
-              };
-              this.imagePicker.getPictures(options).then(
-                results => {
-                  for (var i = 0; i < results.length; i++) {
-                    // const image = (window as any).Ionic.WebView.convertFileSrc(
-                    //   results[i]
-                    // );
-                    this.imageArr.push('data:image/jpeg;base64,' + results[i]);
-                    console.log('imageArr: ' + this.imageArr);
-                  }
-                },
-                err => {
-                  alert(err);
-                }
-              );
-            }
-          },
-          {
-            text: 'Use Camera',
-            handler: () => {
-              this.cameraService
-                .takePicture(this.camera.PictureSourceType.CAMERA)
-                .then(imageData => {
-                  console.log('image: ' + imageData[0].originalData);
-                  const image = (window as any).Ionic.WebView.convertFileSrc(
-                    imageData[0].originalData
-                  );
-                  this.imageArr.push(image);
-                });
-            }
-          },
-          {
-            text: 'Cancel',
-            role: 'cancel'
+  arrayBufferToBase64 = buffer => {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return binary;
+    // return window.btoa(binary);
+  };
+
+  segmentChanged(ev: any) {
+    this.categoryValue = ev.detail.value;
+    const journalParams =
+      this.filterValue === 'personal'
+        ? {
+            userID: this.user.userID,
+            category: this.categoryValue
           }
-        ]
-      });
-      await actionSheet.present();
-    } else {
-      await (await this.utilsSvc.presentToast('Only 4 pictures allowed', 'bottom', 'danger', true)).present();
-      }
+        : {
+            category: this.categoryValue
+          };
+    const imageParams = {};
+    this.journalList = [];
+    this.fetchTravelJournal(journalParams, imageParams);
+  }
+
+  filterSegmentChanged(ev: any) {
+    this.filterValue = ev.detail.value;
+    this.categoryValue = 'place';
+    const journalParams =
+      this.filterValue === 'personal'
+        ? {
+            userID: this.user.userID,
+            category: this.categoryValue
+          }
+        : {
+            category: this.categoryValue
+          };
+    const imageParams = {};
+    this.journalList = [];
+    this.fetchTravelJournal(journalParams, imageParams);
   }
 }

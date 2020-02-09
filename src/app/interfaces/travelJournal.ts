@@ -6,4 +6,6 @@ export default interface TravelJournal {
     imageID?: number;
     image?: any;
     category: string;
+    location?: string;
+    timestamp?: Date;
   }

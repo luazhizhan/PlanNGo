@@ -27,7 +27,7 @@ describe('CollaboratorModalComponent', () => {
       travelPlanID: 1,
       title: 'title',
       country: 'country',
-      desc: '\'Lorem ipsum dolor sit amet,',
+      desc: "'Lorem ipsum dolor sit amet,",
       dateGoing: new Date(),
       dateReturning: new Date()
     };

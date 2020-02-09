@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{pageTitle}}
+    </ion-title>
+    <!-- <ion-buttons slot="end" [hidden]="!isOwner">
+      Edit
+    </ion-buttons> -->
+    <ion-icon name="more" slot="end" (click)="onDelete('12')" [hidden]="!isOwner">
+      Delete
+    </ion-icon>
+  </ion-toolbar>
+  <ion-progress-bar type="indeterminate" color="secondary" [hidden]="!loading"></ion-progress-bar>
+</ion-header>
+
+<ion-content>
+  <form
+    [formGroup]="journalForm"
+    (ngSubmit)="onSubmit(journalForm.value)"
+    id="page-form4"
+    class="list"
+    [hidden]="!isCreate"
+  >
+    <ion-button id="camera" class="button button-positive button-block" (click)="getCamera()"
+      >Upload Image</ion-button
+    >
+    <div class="images">
+      <div class="one-image" *ngFor="let img of imageArr">
+        <img src="{{img}}" alt="" srcset="">
+      </div>
+  </div>
+  <div class="page-container3">
+    <ion-select formControlName="wishListItem"  placeholder="Select Travel Plan">
+      <ion-select-option *ngFor="let options of travelPlan" value="{{options.title}}">{{options.title}}</ion-select-option>
+    </ion-select>
+</div>
+    <div class="page-container3">
+      <ion-select formControlName="category"  value="cat" placeholder="Select Category">
+        <ion-select-option *ngFor="let cat of categoryArr" value="{{cat}}">{{cat}}</ion-select-option>
+      </ion-select>
+    </div>
+    <div id="page-container2">
+      <ion-textarea
+        class="textArea"
+        formControlName="desc"
+        placeholder="Description"
+      ></ion-textarea>
+      <ion-button id="page-button2" class="button button-positive button-block" type="submit"
+        >Submit</ion-button
+      >
+    </div>
+  </form>
+  <ion-list [hidden]="isCreate">
+    <ion-card class="place-img" *ngFor="let journal of journalList">
+      <ion-item>
+        <ion-button (click)="presentAlertConfirm(journal)" slot="end" style="width:170px"
+          >Add to wishlist</ion-button
+        >
+      </ion-item>
+      <ion-slides pager="true" [options]="slideOpts">
+        <ion-slide *ngFor="let image of journal.image[0]">
+          <img src="{{image}}" alt="{{journal.imageID}}" class="place-img" />
+        </ion-slide>
+      </ion-slides>
+
+      <ion-card-header>
+        <ion-card-subtitle>Journal Created: {{journal.timestamp}}</ion-card-subtitle>
+        <ion-card-title>{{journal.wishListItem}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>{{journal.journalDetails}}</ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

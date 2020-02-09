@@ -3,33 +3,70 @@
     <ion-title>
       PlanNGo
     </ion-title>
-    <ion-icon name="more" slot="end" (click)="onDelete('12')">
-      Delete
-    </ion-icon>
   </ion-toolbar>
   <ion-progress-bar type="indeterminate" color="secondary" [hidden]="!loading"></ion-progress-bar>
 </ion-header>
-<ion-content class="journalPage has-header" *ngIf="!loading">
-  <form [formGroup]="journalForm" (ngSubmit)="onSubmit(journalForm.value)" id="page-form4" class="list">
-    <ion-button id="camera" class="button button-positive button-block" (click)="getCamera()">Image</ion-button>
-    <div class="images">
-        <div class="one-image" *ngFor="let img of imageArr">
-          <img src="{{img}}" alt="" srcset="">
-        </div>
-    </div>
-    <div class="page-container3">
-          <ion-select formControlName="wishListItem"  placeholder="Select Travel Plan">
-            <ion-select-option *ngFor="let options of travelPlan" value="{{options.title}}">{{options.title}}</ion-select-option>
-          </ion-select>
-    </div>
-    <div class="page-container3">
-      <ion-select formControlName="category"  value="cat" placeholder="Select Category">
-        <ion-select-option *ngFor="let cat of categoryArr" value="{{cat}}">{{cat}}</ion-select-option>
-      </ion-select>
-    </div>
-    <div id="page-container2">
-      <ion-textarea class="textArea" formControlName="desc" placeholder="Description"></ion-textarea>
-      <ion-button id="page-button2" class="button button-positive button-block" type="submit">Submit</ion-button>
-    </div>
-  </form>
+
+<ion-content>
+  <!-- <ion-searchbar></ion-searchbar>
+  <ion-button (click)="openModal()" color="primary" expand="full">Open Modal</ion-button> -->
+  <ion-list>
+    <ion-segment scrollable (ionChange)="filterSegmentChanged($event)">
+      <ion-segment-button checked value="all" layout="icon-start">
+        <ion-label>All</ion-label>
+        <ion-icon name="people"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="personal" layout="icon-start">
+        <ion-label>Personal</ion-label>
+        <ion-icon name="person"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-segment scrollable (ionChange)="segmentChanged($event)" [(ngModel)]="categoryValue">
+      <ion-segment-button value="place" layout="icon-start">
+        <ion-label>Place of interest</ion-label>
+        <ion-icon name="pin"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="food" layout="icon-start">
+        <ion-label>Food</ion-label>
+        <ion-icon name="pizza"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- <ion-item *ngFor="let journal of journalList"> -->
+    <ion-card
+      class="place-img"
+      *ngFor="let journal of journalList"
+      (click)="travelJournalClick(journal)"
+      button
+    >
+      <img
+        src="{{journal.image[0][0]}}"
+        alt="{{journal.imageID}}"
+        class="place-img"
+      />
+      <ion-card-header>
+        <ion-card-title>{{journal.wishListItem}}</ion-card-title>
+        <ion-card-subtitle>{{journal.timestamp}}</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+    <!-- </ion-item> -->
+    <!-- <ion-item *ngFor="let journal of journalList">
+      <ion-item (click)="travelJournalClick(journal)" button>
+      <ion-item>
+        <ion-label>
+          <img src="{{journal.image}}" alt={{journal.imageID}} class="place-img"/>
+          <h3>{{journal.journalDetails}}</h3>
+        </ion-label>
+      </ion-item>
+    </ion-item> -->
+  </ion-list>
 </ion-content>
+<ion-footer>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/tabs/journal/journal-details/']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-footer>
+

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { TravelPlanService } from '../../services/travel-plan/travel-plan.service';
 import { PlanCollabService } from '../../services/plan-collab/plan-collab.service';
@@ -13,7 +13,7 @@ import TravelPlan from 'src/app/interfaces/travelPlan';
   templateUrl: './my-plan-list.page.html',
   styleUrls: ['./my-plan-list.page.scss']
 })
-export class MyPlanListPage implements OnInit {
+export class MyPlanListPage {
   user: User;
   travelPlans: TravelPlan[];
   planCollabTravelPlans: TravelPlan[];
@@ -26,7 +26,7 @@ export class MyPlanListPage implements OnInit {
     private utilsSvc: UtilsService
   ) {}
 
-  async ngOnInit() {
+  ionViewDidEnter() {
     this.user = this.authSvc.getUserInfo();
     this.travelPlanSvc.getAllTravelPlans(this.user.userID).subscribe(
       travelPlans => {
@@ -36,6 +36,13 @@ export class MyPlanListPage implements OnInit {
       },
       async e => await this.utilsSvc.presentAsyncErrorToast(e)
     );
+  }
+
+  ionViewDidLeave() {
+    this.travelPlans = [];
+    this.planCollabTravelPlans = [];
+    this.loading = true;
+    console.log('done');
   }
 
   async doRefresh(e: any) {
