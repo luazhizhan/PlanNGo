@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WishlistService } from './wishlist.service';
+import { CameraService } from './camera.service';
 
-describe('WishlistService', () => {
+describe('CameraService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: WishlistService = TestBed.get(WishlistService);
+    const service: CameraService = TestBed.get(CameraService);
     expect(service).toBeTruthy();
   });
 });

@@ -30,6 +30,10 @@ export class LoginPage implements OnInit {
     );
   }
 
+  async enterKeyDown(values) {
+    this.loginAuth(values);
+  }
+
   async loginAuth(values) {
     this.btnDisabled = true;
     let toast: HTMLIonToastElement;
@@ -48,6 +52,7 @@ export class LoginPage implements OnInit {
         if (validUser) {
           this.btnDisabled = false;
           this.authSvc.saveUserInfo(validUser);
+          this.authForm.reset();
           this.navCtrl.navigateForward('/tabs/home');
         } else {
           this.btnDisabled = false;

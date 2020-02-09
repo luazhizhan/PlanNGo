@@ -1,14 +1,10 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      Journal
+      PlanNGo
     </ion-title>
   </ion-toolbar>
-  <ion-progress-bar
-    type="indeterminate"
-    color="secondary"
-    [hidden]="!loading"
-  ></ion-progress-bar>
+  <ion-progress-bar type="indeterminate" color="secondary" [hidden]="!loading"></ion-progress-bar>
 </ion-header>
 
 <ion-content>
@@ -66,3 +62,11 @@
     </ion-item> -->
   </ion-list>
 </ion-content>
+<ion-footer>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/tabs/journal/journal-details/']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-footer>
+

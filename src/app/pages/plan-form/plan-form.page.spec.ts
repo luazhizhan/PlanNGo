@@ -13,12 +13,7 @@ describe('PlanFormPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PlanFormPage],
-      imports: [
-        IonicModule.forRoot(),
-        RouterTestingModule,
-        HttpClientModule,
-        ReactiveFormsModule
-      ]
+      imports: [IonicModule.forRoot(), RouterTestingModule, HttpClientModule, ReactiveFormsModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PlanFormPage);

@@ -13,11 +13,7 @@ export class WishlistService {
 
   createWishList(wishList: WishList): Observable<any> {
     const postData = JSON.stringify(wishList);
-    return this.http.post(
-      apisConfigs.post.createWishList,
-      postData,
-      httpConfigs
-    );
+    return this.http.post(apisConfigs.post.createWishList, postData, httpConfigs);
   }
 
   getWishList(params: Object): Observable<any> {

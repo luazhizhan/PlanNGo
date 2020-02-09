@@ -14,12 +14,12 @@
 
 export default interface WishList {
   wishlistID?: number;
-  category:string;
-  name:string;
-  description:string;
-  location?:string;
-  url?:string;
-  openingTime?:string;
-  price?:number;
-  travelPlanID?:number;
+  category: string;
+  name: string;
+  description: string;
+  location?: string;
+  url?: string;
+  openingTime?: string;
+  price?: number;
+  travelPlanID?: number;
 }

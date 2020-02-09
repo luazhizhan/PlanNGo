@@ -14,8 +14,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () =>
-              import('../home/home.module').then(m => m.HomePageModule)
+            loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
           }
         ]
       },
@@ -25,16 +24,12 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () =>
-              import('../my-plan-list/my-plan-list.module').then(
-                m => m.MyPlanListPageModule
-              )
+              import('../my-plan-list/my-plan-list.module').then(m => m.MyPlanListPageModule)
           },
           {
             path: 'plan-form',
             loadChildren: () =>
-              import('../plan-form/plan-form.module').then(
-                m => m.PlanFormPageModule
-              )
+              import('../plan-form/plan-form.module').then(m => m.PlanFormPageModule)
           }
         ]
       },
@@ -43,8 +38,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () =>
-              import('../journal/journal.module').then(m => m.JournalPageModule)
+            loadChildren: () => import('../journal/journal.module').then(m => m.JournalPageModule)
           },
           {
             path: 'journal-details',
@@ -60,8 +54,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () =>
-              import('../profile/profile.module').then(m => m.ProfilePageModule)
+            loadChildren: () => import('../profile/profile.module').then(m => m.ProfilePageModule)
           }
         ]
       },
