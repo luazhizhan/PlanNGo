@@ -1,11 +1,10 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Camera } from '@ionic-native/camera/ngx';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { CameraService } from '../../services/camera/camera.service';
 import { ActionSheetController, Platform } from '@ionic/angular';
-
 import { FormGroup, FormControl } from '@angular/forms';
-
 import { AuthService } from '../../services/auth/auth.service';
 import { UtilsService } from '../../services/utils/utils.service';
 import { TravelPlanService } from '../../services/travel-plan/travel-plan.service';
@@ -13,7 +12,6 @@ import { TravelJournalService } from '../../services/travel-journal/travel-journ
 import User from 'src/app/interfaces/user';
 import TravelPlan from 'src/app/interfaces/travelPlan';
 import TravelJournal from 'src/app/interfaces/travelJournal';
-import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-journal',
