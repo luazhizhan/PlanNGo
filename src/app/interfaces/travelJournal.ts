@@ -5,4 +5,5 @@ export default interface TravelJournal {
     userID?: number;
     imageID?: number;
     image?: any;
+    category: string;
   }

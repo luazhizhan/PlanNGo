@@ -1,8 +1,8 @@
-.camera-img {
+.image {
   border: 1px;
   border-style: solid;
   margin-bottom: auto;
-  height: 50%;
+  height: 25%;
 }
 ion-select {
   text-align: center;
@@ -23,7 +23,7 @@ ion-button {
   }
 }
 
-#page-container3 {
+.page-container3 {
   height: 5vh;
   padding-top: 2px;
   position: relative;
@@ -31,10 +31,6 @@ ion-button {
 
 .journalPage, html, body {
   height: 100vh;
-}
-.image {
-  height: 100%;
-  width: 100%;
 }
 
 #page-container1 {
@@ -45,4 +41,31 @@ ion-button {
   margin: 0;
   border: 2px;
   border-style: solid;
+}
+
+.image-container {
+  min-height: 200px;
+  background-size: cover;
+}
+ 
+@media (min-width: 0px) {
+  .images {
+    column-count: 2;
+  }
+}
+ 
+@media (min-width: 420px) {
+  .images {
+    column-count: 3;
+  }
+}
+ 
+@media (min-width: 720px) {
+  .images {
+    column-count: 4;
+  }
+}
+ 
+.one-image {
+  margin: 2px;
 }

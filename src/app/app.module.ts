@@ -15,6 +15,7 @@ import { File } from '@ionic-native/file/ngx';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilePath } from '@ionic-native/file-path/ngx';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { FilePath } from '@ionic-native/file-path/ngx';
     Camera,
     File,
     FilePath,
+    ImagePicker,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

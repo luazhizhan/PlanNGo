@@ -126,6 +126,7 @@ export class JournalPage implements OnInit {
   }
 
   async getCamera() {
+    if(this.imageArr.length < 4) {
       const actionSheet = await this.actionSheetController.create({
         header: 'Select Image source',
         buttons: [
@@ -135,16 +136,17 @@ export class JournalPage implements OnInit {
               const options = {
                 maximumImagesCount: 4,
                 width: 200,
-                quality: 50,
+                quality: 100,
                 outputType: 1
               };
               this.imagePicker.getPictures(options).then(
                 results => {
                   for (var i = 0; i < results.length; i++) {
-                    const image = (window as any).Ionic.WebView.convertFileSrc(
-                      results[i]
-                    );
-                    this.imageArr.push('data:image/jpeg;base64,' + image);
+                    // const image = (window as any).Ionic.WebView.convertFileSrc(
+                    //   results[i]
+                    // );
+                    this.imageArr.push('data:image/jpeg;base64,' + results[i]);
+                    console.log('imageArr: ' + this.imageArr);
                   }
                 },
                 err => {
@@ -174,5 +176,8 @@ export class JournalPage implements OnInit {
         ]
       });
       await actionSheet.present();
+    } else {
+      await (await this.utilsSvc.presentToast('Only 4 pictures allowed', 'bottom', 'danger', true)).present();
+      }
   }
 }
