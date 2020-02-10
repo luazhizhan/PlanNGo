@@ -49,7 +49,7 @@ export class JournalDetailsPage implements OnInit {
   travelPlan: TravelPlan[];
   isCreate = true;
   pageTitle = '';
-
+  categoryArr = ['Places of Interests', 'Food'];
   constructor(
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -198,10 +198,9 @@ export class JournalDetailsPage implements OnInit {
               this.imagePicker.getPictures(options).then(
                 results => {
                   for (var i = 0; i < results.length; i++) {
-                    // const image = (window as any).Ionic.WebView.convertFileSrc(
-                    //   results[i]
-                    // );
-                    this.imageArr.push('data:image/jpeg;base64,' + results[i]);
+                    debugger;
+                    const image = 'data:image/jpeg;base64,'+  results[i];
+                    this.imageArr.push(image);
                     console.log('imageArr: ' + this.imageArr);
                   }
                 },
