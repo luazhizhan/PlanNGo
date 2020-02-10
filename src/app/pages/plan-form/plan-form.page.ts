@@ -49,7 +49,6 @@ export class PlanFormPage implements OnInit {
   ngOnInit() {
     this.user = this.authSvc.getUserInfo();
     this.activatedRoute.queryParams.subscribe(params => {
-      debugger;
       if (Object.keys(params).length) {
         if (params.travelPlan) {
           this.travelPlan = JSON.parse(params.travelPlan);
