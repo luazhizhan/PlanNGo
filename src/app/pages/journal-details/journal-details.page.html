@@ -9,7 +9,7 @@
     <!-- <ion-buttons slot="end" [hidden]="!isOwner">
       Edit
     </ion-buttons> -->
-    <ion-icon name="more" slot="end" (click)="onDelete('12')" [hidden]="!isOwner">
+    <ion-icon name="more" slot="end" (click)="onDelete(travelJournal.travelJournalID)" [hidden]="!isOwner">
       Delete
     </ion-icon>
   </ion-toolbar>
@@ -19,7 +19,7 @@
 <ion-content>
   <form
     [formGroup]="journalForm"
-    (ngSubmit)="onSubmit(journalForm.value)"
+    (ngSubmit)="isEdit ? onSubmit(journalForm.value, false):onSubmit(journalForm.value, true) "
     id="page-form4"
     class="list"
     [hidden]="!isCreate"
@@ -33,12 +33,15 @@
       </div>
   </div>
   <div class="page-container3">
-    <ion-select formControlName="wishListItem"  placeholder="Select Travel Plan">
+    <ion-select formControlName="wishListItem"  placeholder="Select Travel Plan" value="journalForm.get('wishListItem').value">
       <ion-select-option *ngFor="let options of travelPlan" value="{{options.title}}">{{options.title}}</ion-select-option>
     </ion-select>
 </div>
     <div class="page-container3">
-      <ion-select formControlName="category"  value="cat" placeholder="Select Category">
+        <ion-select formControlName="category" placeholder="Select Category" *ngIf="!isEdit">
+            <ion-select-option *ngFor="let cat of categoryArr" value="{{cat}}">{{cat}}</ion-select-option>
+          </ion-select>
+      <ion-select formControlName="category"  value="journalForm.get('category').value" placeholder="Select Category" *ngIf="isEdit">
         <ion-select-option *ngFor="let cat of categoryArr" value="{{cat}}">{{cat}}</ion-select-option>
       </ion-select>
     </div>
@@ -58,6 +61,9 @@
       <ion-item>
         <ion-button (click)="presentAlertConfirm(journal)" slot="end" style="width:170px"
           >Add to wishlist</ion-button
+        >
+        <ion-button (click)="onEditForm(true)" slot="end" style="width:170px"
+          >Edit</ion-button
         >
       </ion-item>
       <ion-slides pager="true" [options]="slideOpts">
