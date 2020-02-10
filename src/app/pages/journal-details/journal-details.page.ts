@@ -1,7 +1,4 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { CameraService } from '../../services/camera/camera.service';
@@ -9,7 +6,8 @@ import {
   ActionSheetController,
   ToastController,
   Platform,
-  LoadingController
+  LoadingController,
+  NavController
 } from '@ionic/angular';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
@@ -33,6 +31,7 @@ import Image from 'src/app/interfaces/image';
   styleUrls: ['./journal-details.page.scss']
 })
 export class JournalDetailsPage implements OnInit {
+  isEdit: boolean;
   image: any;
   imageArr: any[] = [];
   imageObj: any;
@@ -64,20 +63,22 @@ export class JournalDetailsPage implements OnInit {
     private camera: Camera,
     private imagePicker: ImagePicker,
     private actionSheetController: ActionSheetController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private navCtrl: NavController,
+    private cdr: ChangeDetectorRef
   ) {
     this.journalForm = this.formBuilder.group(
       {
-        travelJournalID: ['', [Validators.required]],
+        travelJournalID: [''],
         wishListItem: ['', [Validators.required]],
-        location: ['', [Validators.required]],
-        imageID: ['', [Validators.required]],
-        journalDetails: ['', [Validators.required]],
-        timestamp: ['', [Validators.required]],
-        username: ['', [Validators.required]],
+        location: [''],
+        imageID: [''],
+        journalDetails: [''],
+        timestamp: [''],
+        username: [''],
         image: [''],
-        desc: [''],
-        category: ['']
+        desc: ['', [Validators.required]],
+        category: ['', [Validators.required]]
       },
       {}
     );
@@ -118,8 +119,8 @@ export class JournalDetailsPage implements OnInit {
           }
         });
         this.journalForm.setValue({
-          wishListItem: 'test',
-          desc: '3+1 Image',
+          wishListItem: '',
+          desc: '',
           category: ''
         });
         this.journalForm.updateValueAndValidity();
@@ -129,9 +130,9 @@ export class JournalDetailsPage implements OnInit {
 
   createForm() {
     return new FormGroup({
-      wishListItem: new FormControl(''),
-      desc: new FormControl(''),
-      category: new FormControl('')
+      wishListItem: new FormControl('', Validators.required),
+      desc: new FormControl('', Validators.required),
+      category: new FormControl('', Validators.required)
     });
   }
 
@@ -166,22 +167,81 @@ export class JournalDetailsPage implements OnInit {
           result,
           'Travel Journal has been deleted successfully'
         );
+        this.navCtrl.navigateForward('/tabs/journal/');
       },
       async e => await this.utilsSvc.presentAsyncErrorToast(e)
     );
   }
 
-  onSubmit(values: TravelJournal) {
-    this.setTravelJournalObj(undefined, this.user.userID, undefined, values);
-    this.travelJournalSvc.travelJournalSubmit(this.travelJournal, 'create').subscribe(
-      async result => {
-        await this.utilsSvc.presentStatusToast(
-          result,
-          'Travel Journal Has been created successfully'
+  async onSubmit(values: TravelJournal) {
+    if (this.journalForm.valid) {
+      if (this.isEdit) {
+        this.setTravelJournalObj(
+          this.journalForm.get('travelJournalID').value,
+          this.user.userID,
+          this.journalForm.get('imageID').value,
+          values
         );
-      },
-      async e => await this.utilsSvc.presentAsyncErrorToast(e)
-    );
+        this.travelJournalSvc.travelJournalSubmit(this.travelJournal, 'update').subscribe(
+          async result => {
+            await this.utilsSvc.presentStatusToast(
+              result,
+              'Travel Journal Has been updated successfully'
+            );
+          },
+          async e => await this.utilsSvc.presentAsyncErrorToast(e)
+        );
+      } else {
+        this.setTravelJournalObj(undefined, this.user.userID, undefined, values);
+        this.travelJournalSvc.travelJournalSubmit(this.travelJournal, 'create').subscribe(
+          async result => {
+            await this.utilsSvc.presentStatusToast(
+              result,
+              'Travel Journal Has been created successfully'
+            );
+          },
+          async e => await this.utilsSvc.presentAsyncErrorToast(e)
+        );
+      }
+    } else {
+      (
+        await this.utilsSvc.presentToast(
+          'Please fill in all the required fields',
+          'bottom',
+          'danger',
+          true
+        )
+      ).present();
+    }
+  }
+
+  onEditForm(editing: boolean) {
+    const journalID = this.travelJournal.travelJournalID;
+    if (editing) {
+      this.journalForm.setValue({
+        travelJournalID: this.travelJournal.travelJournalID,
+        location: '',
+        imageID: this.journalList[0].imageID,
+        journalDetails: '',
+        timestamp: '',
+        username: '',
+        image: '',
+        wishListItem: this.journalList[0].wishListItem ? this.journalList[0].wishListItem : '',
+        desc: this.journalList[0].journalDetails ? this.journalList[0].journalDetails : '',
+        category: this.journalList[0].category ? this.journalList[0].category : ''
+      });
+      if (this.journalList && this.journalList[0].image[0].length > 0) {
+        for (var i = 0; i < this.journalList[0].image[0].length; i++) {
+          this.imageArr.push(this.journalList[0].image[0][i]);
+        }
+      }
+      this.isEdit = true;
+      this.isCreate = true;
+      this.cdr.detectChanges();
+    }
+  }
+
+  removeImage(event) {
   }
 
   async getCamera() {
@@ -201,7 +261,6 @@ export class JournalDetailsPage implements OnInit {
               this.imagePicker.getPictures(options).then(
                 results => {
                   for (var i = 0; i < results.length; i++) {
-                    debugger;
                     const image = 'data:image/jpeg;base64,' + results[i];
                     this.imageArr.push(image);
                     console.log('imageArr: ' + this.imageArr);
@@ -235,7 +294,9 @@ export class JournalDetailsPage implements OnInit {
       });
       await actionSheet.present();
     } else {
-      await (await this.utilsSvc.presentToast('Only 4 pictures allowed', 'bottom', 'danger', true)).present();
+      await (
+        await this.utilsSvc.presentToast('Only 4 pictures allowed', 'bottom', 'danger', true)
+      ).present();
     }
   }
 
@@ -258,8 +319,8 @@ export class JournalDetailsPage implements OnInit {
                   imageBuf = imageBuf.includes('[')
                     ? `${imageBuf.substring(imageBuf.indexOf(`[`) + 1)},${buf[index + 1]}`
                     : buf[index + 1].includes(']')
-                      ? `${imageBuf},${buf[index + 1].substring(0, buf[index + 1].indexOf(']') - 1)}`
-                      : `${imageBuf},${buf[index + 1]}`;
+                    ? `${imageBuf},${buf[index + 1].substring(0, buf[index + 1].indexOf(']') - 1)}`
+                    : `${imageBuf},${buf[index + 1]}`;
                   index += 2;
                   return imageBuf.replace(/\"/g, '');
                 }
@@ -320,7 +381,7 @@ export class JournalDetailsPage implements OnInit {
 
   setWishListObj(user: User, values: TravelJournal) {
     this.loading = true;
-    console.log(this.user)
+    console.log(this.user);
     this.wishList = {
       category: values.category,
       name: values.wishListItem,

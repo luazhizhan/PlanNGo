@@ -9,7 +9,7 @@
     <!-- <ion-buttons slot="end" [hidden]="!isOwner">
       Edit
     </ion-buttons> -->
-    <ion-icon name="more" slot="end" (click)="onDelete('12')" [hidden]="!isOwner">
+    <ion-icon name="more" slot="end" (click)="onDelete(travelJournal.travelJournalID)" [hidden]="!isOwner">
       Delete
     </ion-icon>
   </ion-toolbar>
@@ -29,16 +29,21 @@
     >
     <div class="images">
       <div class="one-image" *ngFor="let img of imageArr">
-        <img src="{{img}}" alt="" srcset="">
+        <img src="{{img}}" alt="" srcset="" (click)="removeImage($event)">
       </div>
   </div>
   <div class="page-container3">
-    <ion-select formControlName="wishListItem"  placeholder="Select Travel Plan">
+    <ion-select formControlName="wishListItem"  placeholder="Select Travel Plan" *ngIf="!isEdit">
       <ion-select-option *ngFor="let options of travelPlan" value="{{options.title}}">{{options.title}}</ion-select-option>
+    </ion-select>
+    <ion-select formControlName="wishListItem"  placeholder="{{journalForm.get('wishListItem').value}}" value="{{journalForm.get('wishListItem').value}}" *ngIf="isEdit" disabled>
     </ion-select>
 </div>
     <div class="page-container3">
-      <ion-select formControlName="category"  value="cat" placeholder="Select Category">
+        <ion-select formControlName="category" placeholder="Select Category" *ngIf="!isEdit">
+            <ion-select-option *ngFor="let cat of categoryArr" value="{{cat}}">{{cat}}</ion-select-option>
+          </ion-select>
+      <ion-select formControlName="category"  value="{{journalForm.get('category').value}}" *ngIf="isEdit">
         <ion-select-option *ngFor="let cat of categoryArr" value="{{cat}}">{{cat}}</ion-select-option>
       </ion-select>
     </div>
@@ -58,6 +63,9 @@
       <ion-item>
         <ion-button (click)="presentAlertConfirm(journal)" slot="end" style="width:170px"
           >Add to wishlist</ion-button
+        >
+        <ion-button (click)="onEditForm(true)" slot="end" style="width:170px"
+          >Edit</ion-button
         >
       </ion-item>
       <ion-slides pager="true" [options]="slideOpts">
