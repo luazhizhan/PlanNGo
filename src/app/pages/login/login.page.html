@@ -10,6 +10,7 @@
 </ion-header>
 
 <ion-content>
+  <img src="../../../assets/images/icon.png" style="width: 50%; margin-left: 25%;" />
   <form
     [formGroup]="authForm"
     (ngSubmit)="loginAuth(authForm.value)"
@@ -23,9 +24,7 @@
       <ion-label position="stacked">Password</ion-label>
       <ion-input required formControlName="pwd" type="password"></ion-input>
     </ion-item>
-    <ion-button expand="block" [disabled]="btnDisabled" type="submit"
-      >Login</ion-button
-    >
+    <ion-button expand="block" [disabled]="btnDisabled" type="submit">Login</ion-button>
     <ion-button
       [routerLink]="['/register/']"
       fill="clear"

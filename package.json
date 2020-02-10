@@ -1,7 +1,7 @@
 {
   "name": "PlanNGo",
-  "version": "0.1.0",
-  "author": "Ionic Framework",
+  "version": "1.0.0",
+  "author": "PlanNGo Team",
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",

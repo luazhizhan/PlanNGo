@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UtilsService } from '../../services/utils/utils.service';
 
 @Component({
   selector: 'app-home',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss']
 })
 export class HomePage {
-  constructor() {}
+  constructor(private utilsSvc: UtilsService) {}
+
+  onCountryClick(country: string) {
+    this.utilsSvc.navigateForward(
+      {
+        country
+      },
+      '/tabs/plan/plan-form/'
+    );
+  }
 }

@@ -7,7 +7,7 @@ const apisConfigs = {
     getTravelPlanByPlanCollabUserID: API_URL + 'get-travel-plan-by-plan-collab-userid/',
     getPlanCollabByTravelPlanID: API_URL + 'get-plan-collab-by-travelplanid/',
     getPlanCollabUserDetailByTravelPlanID: API_URL + 'get-plan-collab-user-detail-by-travelplanid/',
-    getTravelJournal: API_URL + 'get-travel-journals',
+    getTravelJournal: API_URL + 'get-all-travel-journal',
     getWishList: API_URL + 'get-wish-list',
     getImage: API_URL + 'get-image'
   },

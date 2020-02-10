@@ -50,19 +50,35 @@ export class PlanFormPage implements OnInit {
     this.user = this.authSvc.getUserInfo();
     this.activatedRoute.queryParams.subscribe(params => {
       if (Object.keys(params).length) {
-        this.travelPlan = JSON.parse(params.travelPlan);
-        this.isCollab = this.travelPlan.userID === this.user.userID ? false : true;
-        this.planForm.setValue({
-          title: this.travelPlan.title,
-          dateGoing: this.travelPlan.dateGoing,
-          dateReturning: this.travelPlan.dateReturning,
-          country: this.travelPlan.country,
-          desc: this.travelPlan.desc,
-          flightCode: this.travelPlan.flightCode,
-          boardingTime: this.travelPlan.boardingTime,
-          seatInfo: this.travelPlan.seatInfo
-        });
-        this.taskName = 'Update';
+        if (params.travelPlan) {
+          this.travelPlan = JSON.parse(params.travelPlan);
+          this.isCollab = this.travelPlan.userID === this.user.userID ? false : true;
+          this.planForm.setValue({
+            title: this.travelPlan.title,
+            dateGoing: this.travelPlan.dateGoing,
+            dateReturning: this.travelPlan.dateReturning,
+            country: this.travelPlan.country,
+            desc: this.travelPlan.desc,
+            flightCode: this.travelPlan.flightCode,
+            boardingTime: this.travelPlan.boardingTime,
+            seatInfo: this.travelPlan.seatInfo
+          });
+          this.taskName = 'Update';
+        } else {
+          console.log(params.country);
+          this.planForm.setValue({
+            title: params.country + ' Trip',
+            dateGoing: '',
+            dateReturning: '',
+            country: params.country,
+            desc: 'Going to ' + params.country + '!',
+            flightCode: '',
+            boardingTime: '',
+            seatInfo: ''
+          });
+          this.isCollab = true;
+          this.taskName = 'Create';
+        }
       } else {
         this.isCollab = true;
         this.taskName = 'Create';

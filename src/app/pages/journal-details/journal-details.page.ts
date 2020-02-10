@@ -334,8 +334,8 @@ export class JournalDetailsPage implements OnInit {
       // status: 0
     };
   }
-  async presentAlertConfirm(journal: TravelJournal, loadingPopup: HTMLIonLoadingElement) {
-    loadingPopup = await this.loadingCtrl.create({ message: 'Loading' });
+  async presentAlertConfirm(journal: TravelJournal) {
+    const loadingPopup = await this.loadingCtrl.create({ message: 'Loading' });
     const alert = await this.alertController.create({
       header: 'Confirm',
       message: 'Do you want to add this itinerary to your wishlist?',
