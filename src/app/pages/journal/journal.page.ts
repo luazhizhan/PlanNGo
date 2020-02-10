@@ -18,7 +18,7 @@ export class JournalPage {
   imageList: Image[];
   loading = true;
   filterValue = 'all';
-  categoryValue = 'place';
+  categoryValue = 'Places of Interests';
   constructor(
     private authSvc: AuthService,
     private travelJournalSvc: TravelJournalService,
@@ -140,7 +140,7 @@ export class JournalPage {
 
   filterSegmentChanged(ev: any) {
     this.filterValue = ev.detail.value;
-    this.categoryValue = 'place';
+    this.categoryValue = 'Places of Interests';
     const journalParams =
       this.filterValue === 'personal'
         ? {
