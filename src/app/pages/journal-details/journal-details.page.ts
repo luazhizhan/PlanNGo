@@ -1,17 +1,10 @@
 import {
-  AfterViewInit,
   Component,
-  OnInit,
-  ViewChild,
-  ChangeDetectorRef,
-  AfterContentInit
+  OnInit
 } from '@angular/core';
-import { File, IWriteOptions, FileEntry } from '@ionic-native/file/ngx';
-import { FilePath } from '@ionic-native/file-path/ngx';
-import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
 import { CameraService } from '../../services/camera/camera.service';
-import { HttpClient } from '@angular/common/http';
-import { WebView } from '@ionic-native/ionic-webview/ngx';
 import {
   ActionSheetController,
   ToastController,
@@ -27,7 +20,6 @@ import User from 'src/app/interfaces/user';
 import TravelPlan from 'src/app/interfaces/travelPlan';
 import TravelJournal from 'src/app/interfaces/travelJournal';
 import { PopoverController } from '@ionic/angular';
-import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import WishList from '../../interfaces/wishList';
@@ -42,6 +34,7 @@ import Image from 'src/app/interfaces/image';
 })
 export class JournalDetailsPage implements OnInit {
   image: any;
+  imageArr: any[] = [];
   imageObj: any;
   travelJournal: TravelJournal;
   journalList: TravelJournal[];
@@ -66,11 +59,10 @@ export class JournalDetailsPage implements OnInit {
     private wishListService: WishlistService,
     private authSvc: AuthService,
     private imageSvc: ImageService,
-    private popoverCtrl: PopoverController,
     private cameraService: CameraService,
     private travelPlanSvc: TravelPlanService,
     private camera: Camera,
-    private platform: Platform,
+    private imagePicker: ImagePicker,
     private actionSheetController: ActionSheetController,
     private loadingCtrl: LoadingController
   ) {
@@ -125,7 +117,8 @@ export class JournalDetailsPage implements OnInit {
         });
         this.journalForm.setValue({
           wishListItem: 'test',
-          desc: '3+1 Image'
+          desc: '3+1 Image',
+          category: ''
         });
         this.journalForm.updateValueAndValidity();
       }
@@ -135,7 +128,8 @@ export class JournalDetailsPage implements OnInit {
   createForm() {
     return new FormGroup({
       wishListItem: new FormControl(''),
-      desc: new FormControl('')
+      desc: new FormControl(''),
+      category: new FormControl('')
     });
   }
 
@@ -150,10 +144,11 @@ export class JournalDetailsPage implements OnInit {
     this.travelJournal = {
       wishListItem: values.wishListItem,
       desc: values.desc,
-      image: this.image,
+      image: JSON.stringify(this.imageArr),
       travelJournalID,
       userID,
-      imageID
+      imageID,
+      category: values.category
     };
   }
 
@@ -187,38 +182,59 @@ export class JournalDetailsPage implements OnInit {
   }
 
   async getCamera() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Select Image source',
-      buttons: [
-        {
-          text: 'Load from Gallery',
-          handler: () => {
-            this.cameraService
-              .takePicture(this.camera.PictureSourceType.SAVEDPHOTOALBUM)
-              .then(imageData => {
-                console.log('image: ' + imageData[0].originalData);
-                this.image = (window as any).Ionic.WebView.convertFileSrc(
-                  imageData[0].originalData
-                );
-              });
+    if(this.imageArr.length < 4) {
+      const actionSheet = await this.actionSheetController.create({
+        header: 'Select Image source',
+        buttons: [
+          {
+            text: 'Pick from Gallery',
+            handler: () => {
+              const options = {
+                maximumImagesCount: 4,
+                width: 200,
+                quality: 100,
+                outputType: 1
+              };
+              this.imagePicker.getPictures(options).then(
+                results => {
+                  for (var i = 0; i < results.length; i++) {
+                    // const image = (window as any).Ionic.WebView.convertFileSrc(
+                    //   results[i]
+                    // );
+                    this.imageArr.push('data:image/jpeg;base64,' + results[i]);
+                    console.log('imageArr: ' + this.imageArr);
+                  }
+                },
+                err => {
+                  alert(err);
+                }
+              );
+            }
+          },
+          {
+            text: 'Use Camera',
+            handler: () => {
+              this.cameraService
+                .takePicture(this.camera.PictureSourceType.CAMERA)
+                .then(imageData => {
+                  console.log('image: ' + imageData[0].originalData);
+                  const image = (window as any).Ionic.WebView.convertFileSrc(
+                    imageData[0].originalData
+                  );
+                  this.imageArr.push(image);
+                });
+            }
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel'
           }
-        },
-        {
-          text: 'Use Camera',
-          handler: () => {
-            this.cameraService.takePicture(this.camera.PictureSourceType.CAMERA).then(imageData => {
-              console.log('image: ' + imageData[0].originalData);
-              this.image = (window as any).Ionic.WebView.convertFileSrc(imageData[0].originalData);
-            });
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        }
-      ]
-    });
-    await actionSheet.present();
+        ]
+      });
+      await actionSheet.present();
+    } else {
+      await (await this.utilsSvc.presentToast('Only 4 pictures allowed', 'bottom', 'danger', true)).present();
+      }
   }
 
   // journal details portion
@@ -305,7 +321,7 @@ export class JournalDetailsPage implements OnInit {
     this.wishList = {
       category: values.category,
       name: values.wishListItem,
-      description: values.journalDetails,
+      description: values.desc,
       url: '',
       price: 0,
       location: '',

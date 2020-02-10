@@ -25,19 +25,21 @@
     [hidden]="!isCreate"
   >
     <ion-button id="camera" class="button button-positive button-block" (click)="getCamera()"
-      >Camera</ion-button
+      >Upload Image</ion-button
     >
-    <div id="page-container1">
-      <img class="image" src="{{image}}" alt="" />
-    </div>
-    <div id="page-container3">
-      <ion-select
-        formControlName="wishListItem"
-        *ngFor="let options of travelPlan"
-        value="options.title"
-        placeholder="Select Travel Plan"
-      >
-        <ion-select-option value="{{options.title}}">{{options.title}}</ion-select-option>
+    <div class="images">
+      <div class="one-image" *ngFor="let img of imageArr">
+        <img src="{{img}}" alt="" srcset="">
+      </div>
+  </div>
+  <div class="page-container3">
+    <ion-select formControlName="wishListItem"  placeholder="Select Travel Plan">
+      <ion-select-option *ngFor="let options of travelPlan" value="{{options.title}}">{{options.title}}</ion-select-option>
+    </ion-select>
+</div>
+    <div class="page-container3">
+      <ion-select formControlName="category"  value="cat" placeholder="Select Category">
+        <ion-select-option *ngFor="let cat of categoryArr" value="{{cat}}">{{cat}}</ion-select-option>
       </ion-select>
     </div>
     <div id="page-container2">
