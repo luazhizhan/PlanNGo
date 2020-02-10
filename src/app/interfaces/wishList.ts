@@ -22,4 +22,5 @@ export default interface WishList {
   openingTime?: string;
   price?: number;
   travelPlanID?: number;
+  userID?:number;
 }
