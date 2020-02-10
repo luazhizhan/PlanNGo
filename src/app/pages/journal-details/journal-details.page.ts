@@ -77,7 +77,7 @@ export class JournalDetailsPage implements OnInit {
         username: ['', [Validators.required]],
         image: [''],
         desc: [''],
-        category:['']
+        category: ['']
       },
       {}
     );
@@ -102,7 +102,7 @@ export class JournalDetailsPage implements OnInit {
           username: '',
           image: '',
           desc: '',
-          category:''
+          category: ''
         });
         const journalParams = {
           travelJournalID: this.travelJournal.travelJournalID
@@ -151,7 +151,7 @@ export class JournalDetailsPage implements OnInit {
       userID,
       imageID,
       category: values.category,
-      journalDetails:values.journalDetails
+      journalDetails: values.journalDetails
     };
   }
 
@@ -185,7 +185,7 @@ export class JournalDetailsPage implements OnInit {
   }
 
   async getCamera() {
-    if(this.imageArr.length < 4) {
+    if (this.imageArr.length < 4) {
       const actionSheet = await this.actionSheetController.create({
         header: 'Select Image source',
         buttons: [
@@ -202,7 +202,7 @@ export class JournalDetailsPage implements OnInit {
                 results => {
                   for (var i = 0; i < results.length; i++) {
                     debugger;
-                    const image = 'data:image/jpeg;base64,'+  results[i];
+                    const image = 'data:image/jpeg;base64,' + results[i];
                     this.imageArr.push(image);
                     console.log('imageArr: ' + this.imageArr);
                   }
@@ -236,7 +236,7 @@ export class JournalDetailsPage implements OnInit {
       await actionSheet.present();
     } else {
       await (await this.utilsSvc.presentToast('Only 4 pictures allowed', 'bottom', 'danger', true)).present();
-      }
+    }
   }
 
   // journal details portion
@@ -258,8 +258,8 @@ export class JournalDetailsPage implements OnInit {
                   imageBuf = imageBuf.includes('[')
                     ? `${imageBuf.substring(imageBuf.indexOf(`[`) + 1)},${buf[index + 1]}`
                     : buf[index + 1].includes(']')
-                    ? `${imageBuf},${buf[index + 1].substring(0, buf[index + 1].indexOf(']') - 1)}`
-                    : `${imageBuf},${buf[index + 1]}`;
+                      ? `${imageBuf},${buf[index + 1].substring(0, buf[index + 1].indexOf(']') - 1)}`
+                      : `${imageBuf},${buf[index + 1]}`;
                   index += 2;
                   return imageBuf.replace(/\"/g, '');
                 }
@@ -318,12 +318,14 @@ export class JournalDetailsPage implements OnInit {
     // return window.btoa(binary);
   };
 
-  setWishListObj(userID: number, values: TravelJournal) {
+  setWishListObj(user: User, values: TravelJournal) {
     this.loading = true;
+    console.log(this.user)
     this.wishList = {
       category: values.category,
       name: values.wishListItem,
-      description: values.journalDetails
+      description: values.journalDetails,
+      userID: user.userID
       //userID,
 
       // description: values.
@@ -347,7 +349,7 @@ export class JournalDetailsPage implements OnInit {
           text: 'Confirm',
           handler: () => {
             loadingPopup.present();
-            this.setWishListObj(this.user.userID, journal);
+            this.setWishListObj(this.user, journal);
             this.wishListService.createWishList(this.wishList).subscribe(
               async result => {
                 await this.utilsSvc.presentStatusToast(result, 'Added to wishlist successfully');
