@@ -18,7 +18,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterPageModule)
   },
   { path: 'wishlistmain', loadChildren: () => import('./pages/wishlistmain/wishlistmain.module').then(m => m.WishlistmainPageModule)
-  },  { path: 'wishlist-create', loadChildren: './pages/wishlist-create/wishlist-create.module#WishlistCreatePageModule' }
+  },
+  { path: 'wishlist-create', loadChildren: './pages/wishlist-create/wishlist-create.module#WishlistCreatePageModule' },
+  { path: 'wishlist-detail/:wishlistID', loadChildren: './pages/wishlist-detail/wishlist-detail.module#WishlistDetailPageModule' },  { path: 'wishlist-update', loadChildren: './pages/wishlist-update/wishlist-update.module#WishlistUpdatePageModule' }
+
 
 ];
 @NgModule({

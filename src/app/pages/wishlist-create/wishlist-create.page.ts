@@ -9,6 +9,7 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { NgForm } from '@angular/forms';
 import WishList from 'src/app/interfaces/wishlist';
 import TravelPlan from 'src/app/interfaces/travelPlan';
+import User from 'src/app/interfaces/user';
 
 @Component({
   selector: 'app-wishlist-create',
@@ -22,6 +23,7 @@ export class WishlistCreatePage implements OnInit {
   taskName: string;
   Category: string[] = ["Food","Places of Interest"];
   TravelPlan: TravelPlan;
+  user: User;
 
   constructor(
     private modalCtrl: ModalController,
@@ -35,30 +37,31 @@ export class WishlistCreatePage implements OnInit {
     this.Category = ['Food','Places of Interest']
     this.wishForm = this.formBuilder.group(
       {
-        Category: ['', [Validators.required]],
-        Name: ['', [Validators.required]],
-        Description: ['', [Validators.required]],
-        Location: ['', [Validators.required]],
-        URL: ['', []],
-        OpeningTime: ['', []],
-        Price: ['', []]
+        category: ['', [Validators.required]],
+        name: ['', [Validators.required]],
+        description: ['', [Validators.required]],
+        location: ['', [Validators.required]],
+        url: ['', []],
+        openingTime: ['', []],
+        price: ['', []]
       },
       {}
     );
    }
 
   ngOnInit() {
+    this.user = this.authSvc.getUserInfo();
     this.activatedRoute.queryParams.subscribe(params => {
       if (Object.keys(params).length) {
         this.wishlist = JSON.parse(params.WishList);
         this.wishForm.setValue({
-          Category: this.wishlist.Category,
-          Name: this.wishlist.Name,
-          Description: this.wishlist.Description,
-          Location: this.wishlist.Location,
-          URL: this.wishlist.URL,
-          OpeningTime: this.wishlist.OpeningTime,
-          Price: this.wishlist.Price
+          category: this.wishlist.category,
+          name: this.wishlist.name,
+          description: this.wishlist.description,
+          location: this.wishlist.location,
+          url: this.wishlist.url,
+          openingTime: this.wishlist.openingTime,
+          price: this.wishlist.price
         });
         this.taskName = 'Update';
       } else {
@@ -69,15 +72,17 @@ export class WishlistCreatePage implements OnInit {
 
   async onWishSubmit(values: WishList) {
     console.log("Testing");
-    // if (this.wishForm.invalid) {
-    //   const toast = await this.utilsSvc.presentToast(
-    //     'Please fill up the necessary fields on the form.',
-    //     'bottom',
-    //     'danger',
-    //     true
-    //   );
-    //   return toast.present();
-    // }
+    console.log(this.wishForm,'wishForm');
+    if (this.wishForm.invalid) {
+      const toast = await this.utilsSvc.presentToast(
+        'Please fill up the necessary fields on the form.',
+        'bottom',
+        'danger',
+        true
+      );
+      return toast.present();
+      console.log('Error!')
+    }
     const loadingPopup = await this.utilsSvc.presentLoading('Loading...');
     console.log("Button")
     if (this.taskName === 'Create') {
@@ -87,20 +92,24 @@ export class WishlistCreatePage implements OnInit {
     }
   }
 
-  onSubmit(form:NgForm){
+  // onSubmit(form:NgForm){
 
-  }
+  // }
 
   createWishList(values: WishList, loadingPopup: HTMLIonLoadingElement) {
     console.log("Create button");
-    this.setWishListObj(values,undefined,this.TravelPlan.travelPlanID);
+    this.setWishListObj(values,undefined);
+    console.log(values,'hi')
     this.WishPlanSvc.createWishList(this.wishlist).subscribe(
       async result => {
+        console.log('Here!!')
+        console.log(result,'result info')
         await this.utilsSvc.presentStatusToast(
-          result.wishlistID,
+          result.results.insertId,
           'Wish List created successfully'
         );
-        if (result.wishlistID) {
+        console.log(result.results.insertId,'result!')
+        if (result.results.insertId) {
           this.navCtrl.navigateRoot('/wishlistmain');
         }
       },
@@ -109,19 +118,22 @@ export class WishlistCreatePage implements OnInit {
     );
   }
 
-  setWishListObj(values: WishList,wishlistID: number, travelPlanID: number) {
+  setWishListObj(values: WishList,wishlistID: number) {
+    console.log(values,'wishlistobj')
     this.wishlist = {
       // travelPlanID,
       wishlistID,
-      Category: values.Category,
-      Name: values.Name,
-      Description: values.Description,
-      Location: values.Location,
-      URL: values.URL,
-      OpeningTime: values.OpeningTime,
-      Price: values.Price,
-      travelPlanID
+      category: values.category,
+      name: values.name,
+      description: values.description,
+      location: values.location,
+      url: values.url,
+      openingTime: values.openingTime,
+      price: values.price,
+      //travelPlanID,
+      userID:this.user.userID
     };
+    console.log(this.wishlist,'final')
   }
 
 }

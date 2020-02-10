@@ -1,16 +1,19 @@
 <ion-header>
   <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>{{taskName}} Wishlist</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form>
+  <form [formGroup]="wishForm" (ngSubmit)="onWishSubmit(wishForm.value)">
     <ion-item>
       <ion-label>
         Category
       </ion-label>
-      <ion-select name="">
+      <ion-select name="" formControlName="category" ok-text="Select" cancel-text="Close">
         <ion-select-option>
           Places Of Interest
         </ion-select-option>
@@ -23,37 +26,37 @@
       <ion-label>
         Name:
       </ion-label>
-        <ion-input></ion-input>
+        <ion-input formControlName="name"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>
         Description:
       </ion-label>
-        <ion-input></ion-input>
+        <ion-input formControlName="description"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>
         Location:
       </ion-label>
-        <ion-input></ion-input>
+        <ion-input formControlName="location"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>
         URL:
       </ion-label>
-        <ion-input placeholder="Optional"></ion-input>
+        <ion-input placeholder="Optional" formControlName="url"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>
         Opening Time:
       </ion-label>
-        <ion-input></ion-input>
+        <ion-input formControlName="openingTime"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>
         Price:
       </ion-label>
-        <ion-input placeholder="Optional"></ion-input>
+        <ion-input placeholder="Optional" formControlName="price"></ion-input>
     </ion-item>
     <ion-button color="primary" type="submit" style="text-transform:capitalize;" expand="block" (click)="onWishSubmit(wishForm.value)">
       {{taskName}}

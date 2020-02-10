@@ -8,9 +8,10 @@ import { TravelPlanService } from '../../services/travel-plan/travel-plan.servic
 import { UtilsService } from '../../services/utils/utils.service';
 import User from 'src/app/interfaces/user';
 import TravelPlan from 'src/app/interfaces/travelPlan';
+import WishList from 'src/app/interfaces/wishlist';
 import { CollaboratorModalComponent } from '../../components/collaborator-modal/collaborator-modal.component';
 import { WishlistmainPage } from '../wishlistmain/wishlistmain.page';
-
+import { WishListService } from '../../services/wishlist/wishlist.service';
 
 @Component({
   selector: 'app-plan-form',
@@ -23,6 +24,7 @@ export class PlanFormPage implements OnInit {
   isCollab: boolean;
   user: User;
   travelPlan: TravelPlan;
+  wishList:WishList;
   private name;
 
   constructor(
@@ -32,7 +34,8 @@ export class PlanFormPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private authSvc: AuthService,
     private travelPlanSvc: TravelPlanService,
-    private utilsSvc: UtilsService
+    private utilsSvc: UtilsService,
+    private wishListSvc: WishListService
   ) {
     this.planForm = this.formBuilder.group(
       {
@@ -67,6 +70,10 @@ export class PlanFormPage implements OnInit {
           seatInfo: this.travelPlan.seatInfo,
           flightReminder: this.travelPlan.flightReminder
         });
+        const param={
+          travelPlanID:this.travelPlan.travelPlanID
+        }
+        this.fetchWishList(param);
         this.taskName = 'Update';
       } else {
         this.isCollab = true;
@@ -132,17 +139,20 @@ export class PlanFormPage implements OnInit {
     this.setTravelPlanObj(undefined, this.user.userID, values);
     this.travelPlanSvc.createTravelPlan(this.travelPlan).subscribe(
       async result => {
+        console.log(result,'plan result')
         await this.utilsSvc.presentStatusToast(
-          result.travelPlanId,
+          result,
           'Travel plan created successfully'
         );
-        if (result.travelPlanId) {
+        console.log(result.travelPlanID,'result travel!')
+        if (result) {
           this.navCtrl.navigateRoot('/tabs/plan');
         }
       },
       async e => await this.utilsSvc.presentAsyncErrorToast(e),
       () => loadingPopup.dismiss()
     );
+    
   }
 
   updateTravelPlan(values: TravelPlan, loadingPopup: HTMLIonLoadingElement) {
@@ -159,7 +169,19 @@ export class PlanFormPage implements OnInit {
     );
   }
 
+  async goToWishList(){
+    this.utilsSvc.navigateForward({
+      travelPlanID:this.travelPlan.travelPlanID
+    },'/wishlistmain')
+  }
 
+  async fetchWishList(wishlistParams){
+    this.wishListSvc.getWishLists(wishlistParams).subscribe(
+      wishList=>{
+        this.wishList=wishList
+      }
+    )
+  }
   // goTowishlistMainPage()
   // {
   //   this.navCtrl.push(WishlistmainPage,{});

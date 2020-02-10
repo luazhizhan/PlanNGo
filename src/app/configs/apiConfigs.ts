@@ -8,7 +8,8 @@ const apisConfigs = {
     getTravelPlanByPlanCollabUserID: API_URL + 'get-travel-plan-by-plan-collab-userid/',
     getPlanCollabByTravelPlanID: API_URL + 'get-plan-collab-by-travelplanid/',
     getPlanCollabUserDetailByTravelPlanID: API_URL + 'get-plan-collab-user-detail-by-travelplanid/',
-    getWishList: API_URL + 'get-wish-list/'
+    getWishList: API_URL + 'get-wish-list/',
+    getWishListByID: API_URL + 'get-wish-list/'
   },
   post: {
     login: API_URL + 'login',
@@ -18,11 +19,13 @@ const apisConfigs = {
     createWishList: API_URL + 'create-wish-list'
   },
   put: {
-    updateTravelPlanByTravelPlanID: API_URL + 'update-travel-plan-by-travel-plan-id'
+    updateTravelPlanByTravelPlanID: API_URL + 'update-travel-plan-by-travel-plan-id',
+    updateWishList: API_URL + 'update-wish-list'
   },
   delete: {
     deleteTravelPlanByIDs: API_URL + 'delete-travel-plan-by-ids',
-    removePlanCollabByIds: API_URL + 'remove-plan-collab-by-ids'
+    removePlanCollabByIds: API_URL + 'remove-plan-collab-by-ids',
+    deleteWishList: API_URL + 'delete-wish-list'
   }
 };
 
