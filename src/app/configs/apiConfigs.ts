@@ -1,4 +1,5 @@
 const API_URL = 'https://elp-planngo.herokuapp.com/';
+// const API_URL = 'http://localhost:3000/';
 
 const apisConfigs = {
   get: {
@@ -12,6 +13,7 @@ const apisConfigs = {
     getImage: API_URL + 'get-image'
   },
   post: {
+    createUser: API_URL + 'create-user',
     login: API_URL + 'login',
     createTravelPlan: API_URL + 'create-travel-plan',
     addPlanCollab: API_URL + 'add-plan-collab',

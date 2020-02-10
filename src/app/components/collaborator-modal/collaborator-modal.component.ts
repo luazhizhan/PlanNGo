@@ -84,9 +84,42 @@ export class CollaboratorModalComponent implements OnInit {
             ? this.showCollabPopup(planCollab)
             : await this.presentErrorToast('You are the creator of the plan');
         } else {
-          await this.presentErrorToast('User not found');
+          await this.createUserAndAddCollab(values);
         }
       });
+  }
+
+  async createUserAndAddCollab(values: { username: string; email: any }) {
+    const alert = await this.utilsSvc.confirmAlert(
+      'Create new user',
+      values.username + ' will be created and added as collaborator',
+      'Cancel',
+      () => {},
+      'Okay',
+      async () => {
+        try {
+          const result = await this.authSvc.createUser({
+            userName: values.username,
+            email: values.email
+          });
+          await this.addCollab({
+            userID: result.userID,
+            userName: values.username,
+            email: values.email
+          });
+          const toast = await this.utilsSvc.presentToast(
+            'New User: ' + values.username + ' created',
+            'bottom',
+            'success',
+            true
+          );
+          await toast.present();
+        } catch (e) {
+          await this.utilsSvc.presentAsyncErrorToast(e);
+        }
+      }
+    );
+    await alert.present();
   }
 
   async dismissModal() {
@@ -105,7 +138,7 @@ export class CollaboratorModalComponent implements OnInit {
       'Cancel',
       () => {},
       'Okay',
-      async () => this.addCollab(planCollab)
+      async () => await this.addCollab(planCollab)
     );
     await alert.present();
   }
