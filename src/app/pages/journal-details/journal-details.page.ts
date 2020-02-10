@@ -49,7 +49,7 @@ export class JournalDetailsPage implements OnInit {
   travelPlan: TravelPlan[];
   isCreate = true;
   pageTitle = '';
-
+  categoryArr = ['Places of Interests', 'Food'];
   constructor(
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -76,7 +76,8 @@ export class JournalDetailsPage implements OnInit {
         timestamp: ['', [Validators.required]],
         username: ['', [Validators.required]],
         image: [''],
-        desc: ['']
+        desc: [''],
+        category:['']
       },
       {}
     );
@@ -100,7 +101,8 @@ export class JournalDetailsPage implements OnInit {
           timestamp: '',
           username: '',
           image: '',
-          desc: ''
+          desc: '',
+          category:''
         });
         const journalParams = {
           travelJournalID: this.travelJournal.travelJournalID
@@ -148,7 +150,8 @@ export class JournalDetailsPage implements OnInit {
       travelJournalID,
       userID,
       imageID,
-      category: values.category
+      category: values.category,
+      journalDetails:values.journalDetails
     };
   }
 
@@ -198,10 +201,9 @@ export class JournalDetailsPage implements OnInit {
               this.imagePicker.getPictures(options).then(
                 results => {
                   for (var i = 0; i < results.length; i++) {
-                    // const image = (window as any).Ionic.WebView.convertFileSrc(
-                    //   results[i]
-                    // );
-                    this.imageArr.push('data:image/jpeg;base64,' + results[i]);
+                    debugger;
+                    const image = 'data:image/jpeg;base64,'+  results[i];
+                    this.imageArr.push(image);
                     console.log('imageArr: ' + this.imageArr);
                   }
                 },
@@ -321,12 +323,7 @@ export class JournalDetailsPage implements OnInit {
     this.wishList = {
       category: values.category,
       name: values.wishListItem,
-      description: values.desc,
-      url: '',
-      price: 0,
-      location: '',
-      openingTime: '',
-      travelPlanID: 1
+      description: values.journalDetails
       //userID,
 
       // description: values.
