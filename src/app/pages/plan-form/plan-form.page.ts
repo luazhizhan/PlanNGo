@@ -63,20 +63,22 @@ export class PlanFormPage implements OnInit {
             boardingTime: this.travelPlan.boardingTime,
             seatInfo: this.travelPlan.seatInfo
           });
+          this.taskName = 'Update';
         } else {
           console.log(params.country);
           this.planForm.setValue({
-            title: '',
+            title: params.country + ' Trip',
             dateGoing: '',
             dateReturning: '',
             country: params.country,
-            desc: '',
+            desc: 'Going to ' + params.country + '!',
             flightCode: '',
             boardingTime: '',
             seatInfo: ''
           });
+          this.isCollab = true;
+          this.taskName = 'Create';
         }
-        this.taskName = 'Update';
       } else {
         this.isCollab = true;
         this.taskName = 'Create';
