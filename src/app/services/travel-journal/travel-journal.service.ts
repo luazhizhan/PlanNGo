@@ -17,8 +17,9 @@ export class TravelJournalService {
 
   travelJournalSubmit(travelJournal: TravelJournal, type): Observable<any> {
     const data = JSON.stringify(travelJournal);
+    debugger;
     if (type === 'update') {
-      return this.http.put(apisConfigs.post.createTravelJournal, data, httpConfigs);
+      return this.http.post(apisConfigs.post.createTravelJournal, data, httpConfigs);
     } else if (type === 'create') {
       return this.http.post(apisConfigs.post.createTravelJournal, data, httpConfigs);
     }

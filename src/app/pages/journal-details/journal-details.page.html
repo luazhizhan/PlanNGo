@@ -19,7 +19,7 @@
 <ion-content>
   <form
     [formGroup]="journalForm"
-    (ngSubmit)="isEdit ? onSubmit(journalForm.value, false):onSubmit(journalForm.value, true) "
+    (ngSubmit)="onSubmit(journalForm.value)"
     id="page-form4"
     class="list"
     [hidden]="!isCreate"
@@ -29,19 +29,21 @@
     >
     <div class="images">
       <div class="one-image" *ngFor="let img of imageArr">
-        <img src="{{img}}" alt="" srcset="">
+        <img src="{{img}}" alt="" srcset="" (click)="removeImage($event)">
       </div>
   </div>
   <div class="page-container3">
-    <ion-select formControlName="wishListItem"  placeholder="Select Travel Plan" value="journalForm.get('wishListItem').value">
+    <ion-select formControlName="wishListItem"  placeholder="Select Travel Plan" *ngIf="!isEdit">
       <ion-select-option *ngFor="let options of travelPlan" value="{{options.title}}">{{options.title}}</ion-select-option>
+    </ion-select>
+    <ion-select formControlName="wishListItem"  placeholder="{{journalForm.get('wishListItem').value}}" value="{{journalForm.get('wishListItem').value}}" *ngIf="isEdit" disabled>
     </ion-select>
 </div>
     <div class="page-container3">
         <ion-select formControlName="category" placeholder="Select Category" *ngIf="!isEdit">
             <ion-select-option *ngFor="let cat of categoryArr" value="{{cat}}">{{cat}}</ion-select-option>
           </ion-select>
-      <ion-select formControlName="category"  value="journalForm.get('category').value" placeholder="Select Category" *ngIf="isEdit">
+      <ion-select formControlName="category"  value="{{journalForm.get('category').value}}" *ngIf="isEdit">
         <ion-select-option *ngFor="let cat of categoryArr" value="{{cat}}">{{cat}}</ion-select-option>
       </ion-select>
     </div>
