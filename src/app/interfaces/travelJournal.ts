@@ -8,4 +8,5 @@ export default interface TravelJournal {
     category: string;
     location?: string;
     timestamp?: Date;
+    journalDetails: string;
   }
