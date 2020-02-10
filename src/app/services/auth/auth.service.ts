@@ -19,6 +19,11 @@ export class AuthService {
     return this.http.post(apisConfigs.post.login, postData, httpConfigs);
   }
 
+  createUser(user: User): Promise<any> {
+    const postData = JSON.stringify(user);
+    return this.http.post(apisConfigs.post.createUser, postData, httpConfigs).toPromise();
+  }
+
   logout(): void {
     localStorage.removeItem('user');
   }
