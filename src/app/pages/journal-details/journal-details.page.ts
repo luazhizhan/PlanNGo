@@ -175,6 +175,7 @@ export class JournalDetailsPage implements OnInit {
         }, {
           text: 'Confirm',
           handler: () => {
+            this.loading = true;
             this.travelJournalSvc.removeTravelJournal(payload).subscribe(
               async result => {
                 await this.utilsSvc.presentStatusToast(
@@ -194,6 +195,7 @@ export class JournalDetailsPage implements OnInit {
 
   async onSubmit(values: TravelJournal) {
     if (this.journalForm.valid) {
+      this.loading = true;
       if (this.isEdit) {
         this.setTravelJournalObj(
           this.journalForm.get('travelJournalID').value,
@@ -258,9 +260,6 @@ export class JournalDetailsPage implements OnInit {
       this.isCreate = true;
       this.cdr.detectChanges();
     }
-  }
-
-  removeImage(event) {
   }
 
   async getCamera() {
