@@ -99,7 +99,20 @@ export class WishListService {
     }
   }
 
+
+  updateWishLists(wishList: WishList): Observable<any> {
+    const putData = JSON.stringify(wishList);
+    return this.http.put(apisConfigs.put.updateWishList, putData, httpConfigs);
+  }
+
+  deleteWishLists(wishListID: number, userID: number): Observable<any> {
+    httpConfigs.body = {
+      wishListID,
+      userID
+    };
+    return this.http.delete(apisConfigs.delete.deleteWishList, httpConfigs);
+  }
 }
 
-const detailAPI = "http://localhost:4200/wishlist-detail"
+
 

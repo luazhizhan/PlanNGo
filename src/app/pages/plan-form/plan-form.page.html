@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button defaultHref="/tabs/plan"></ion-back-button>
     </ion-buttons>
     <ion-title>
       {{taskName}} Plan
@@ -10,7 +10,7 @@
       <ion-button (click)="collaboratorClick()" [hidden]="isCollab" >
         <ion-icon slot="icon-only" name="person"></ion-icon>
       </ion-button>
-      <ion-button (click)="goToWishList()">
+      <ion-button (click)="goToWishList()" [hidden]="isCollab">
         <ion-icon slot="icon-only" name="color-wand"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -79,10 +79,6 @@
       <ion-item>
         <ion-label position="floating">Seat Number</ion-label>
         <ion-input formControlName="seatInfo" type="number"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Boarding Time Reminder</ion-label>
-        <ion-checkbox color="primary" formControlName="flightReminder" slot="end"></ion-checkbox>
       </ion-item>
     </ion-list>
     <ion-button color="primary" type="submit" style="text-transform:capitalize;" expand="block">

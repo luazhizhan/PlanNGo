@@ -49,6 +49,13 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('../journal/journal.module').then(m => m.JournalPageModule)
+          },
+          {
+            path: 'journal-details',
+            loadChildren: () =>
+              import('../journal-details/journal-details.module').then(
+                m => m.JournalDetailsPageModule
+              )
           }
         ]
       },

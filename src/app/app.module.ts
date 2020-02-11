@@ -19,13 +19,26 @@ import { File } from '@ionic-native/file/ngx';
 //import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilePath } from '@ionic-native/file-path/ngx';
 
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule,FormsModule,ReactiveFormsModule],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
   providers: [
     StatusBar,
     SplashScreen,
+    Camera,
+    File,
+    FilePath,
+    ImagePicker,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

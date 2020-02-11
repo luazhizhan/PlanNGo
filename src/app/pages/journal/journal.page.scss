@@ -1,0 +1,17 @@
+.place-img img {
+  max-height: 60%;
+  overflow: hidden;
+}
+ion-segment {
+  padding: 6px;
+  height: 60px;
+}
+ion-segment-button {
+  min-height: 10px;
+  font-size: 11px;
+}
+
+.image-container {
+  min-height: 200px;
+  background-size: cover;
+}

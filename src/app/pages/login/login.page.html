@@ -10,7 +10,12 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="authForm" (ngSubmit)="loginAuth(authForm.value)">
+  <img src="../../../assets/images/icon.png" style="width: 50%; margin-left: 25%;" />
+  <form
+    [formGroup]="authForm"
+    (ngSubmit)="loginAuth(authForm.value)"
+    (keydown.enter)="enterKeyDown(authForm.value)"
+  >
     <ion-item>
       <ion-label position="stacked">Username</ion-label>
       <ion-input required formControlName="username" type="text"></ion-input>

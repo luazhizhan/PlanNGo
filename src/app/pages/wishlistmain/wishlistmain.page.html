@@ -8,6 +8,7 @@
     </ion-title>
     
   </ion-toolbar>
+  <ion-progress-bar type="indeterminate" color="secondary" [hidden]="!loading"></ion-progress-bar>
 </ion-header>
 <ion-content padding id="page1">
   <form id="wishlistMain-form1">
@@ -15,11 +16,11 @@
       <ion-label>
         Category
       </ion-label>
-      <ion-select name="">
-        <ion-select-option>
+      <ion-select name="" (ionChange)="segmentChanged($event)" [value]="categoryValue">
+        <ion-select-option value=" Places Of Interest">
           Places Of Interest
         </ion-select-option>
-        <ion-select-option>
+        <ion-select-option value="Food">
           Food
         </ion-select-option>
       </ion-select>
