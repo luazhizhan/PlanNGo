@@ -24,8 +24,7 @@ export class PlanFormPage implements OnInit {
   isCollab: boolean;
   user: User;
   travelPlan: TravelPlan;
-  wishList:WishList;
-  private name;
+  wishList: WishList;
 
   constructor(
     private modalCtrl: ModalController,
@@ -46,8 +45,7 @@ export class PlanFormPage implements OnInit {
         desc: ['', [Validators.minLength(3)]],
         flightCode: ['', []],
         boardingTime: ['', []],
-        seatInfo: ['', []],
-        flightReminder: ['', []]
+        seatInfo: ['', []]
       },
       {}
     );
@@ -55,26 +53,41 @@ export class PlanFormPage implements OnInit {
 
   ngOnInit() {
     this.user = this.authSvc.getUserInfo();
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.activatedRoute.queryParams.subscribe(async params => {
       if (Object.keys(params).length) {
-        this.travelPlan = JSON.parse(params.travelPlan);
-        this.isCollab = this.travelPlan.userID === this.user.userID ? false : true;
-        this.planForm.setValue({
-          title: this.travelPlan.title,
-          dateGoing: this.travelPlan.dateGoing,
-          dateReturning: this.travelPlan.dateReturning,
-          country: this.travelPlan.country,
-          desc: this.travelPlan.desc,
-          flightCode: this.travelPlan.flightCode,
-          boardingTime: this.travelPlan.boardingTime,
-          seatInfo: this.travelPlan.seatInfo,
-          flightReminder: this.travelPlan.flightReminder
-        });
-        const param={
-          travelPlanID:this.travelPlan.travelPlanID
+        if (params.travelPlan) {
+          this.travelPlan = JSON.parse(params.travelPlan);
+          this.isCollab = this.travelPlan.userID === this.user.userID ? false : true;
+          this.planForm.setValue({
+            title: this.travelPlan.title,
+            dateGoing: this.travelPlan.dateGoing,
+            dateReturning: this.travelPlan.dateReturning,
+            country: this.travelPlan.country,
+            desc: this.travelPlan.desc,
+            flightCode: this.travelPlan.flightCode,
+            boardingTime: this.travelPlan.boardingTime,
+            seatInfo: this.travelPlan.seatInfo
+          });
+          const param = {
+            travelPlanID: this.travelPlan.travelPlanID
+          }
+          await this.fetchWishList(param);
+          this.taskName = 'Update';
+        } else {
+          console.log(params.country);
+          this.planForm.setValue({
+            title: params.country + ' Trip',
+            dateGoing: '',
+            dateReturning: '',
+            country: params.country,
+            desc: 'Going to ' + params.country + '!',
+            flightCode: '',
+            boardingTime: '',
+            seatInfo: ''
+          });
+          this.isCollab = true;
+          this.taskName = 'Create';
         }
-        this.fetchWishList(param);
-        this.taskName = 'Update';
       } else {
         this.isCollab = true;
         this.taskName = 'Create';
@@ -130,7 +143,6 @@ export class PlanFormPage implements OnInit {
       flightCode: values.flightCode,
       boardingTime: values.boardingTime,
       seatInfo: values.seatInfo,
-      flightReminder: values.flightReminder,
       userID
     };
   }
@@ -139,12 +151,12 @@ export class PlanFormPage implements OnInit {
     this.setTravelPlanObj(undefined, this.user.userID, values);
     this.travelPlanSvc.createTravelPlan(this.travelPlan).subscribe(
       async result => {
-        console.log(result,'plan result')
+        console.log(result, 'plan result')
         await this.utilsSvc.presentStatusToast(
           result,
           'Travel plan created successfully'
         );
-        console.log(result.travelPlanID,'result travel!')
+        console.log(result.travelPlanID, 'result travel!')
         if (result) {
           this.navCtrl.navigateRoot('/tabs/plan');
         }
@@ -152,7 +164,7 @@ export class PlanFormPage implements OnInit {
       async e => await this.utilsSvc.presentAsyncErrorToast(e),
       () => loadingPopup.dismiss()
     );
-    
+
   }
 
   updateTravelPlan(values: TravelPlan, loadingPopup: HTMLIonLoadingElement) {
@@ -169,16 +181,16 @@ export class PlanFormPage implements OnInit {
     );
   }
 
-  async goToWishList(){
+  async goToWishList() {
     this.utilsSvc.navigateForward({
-      travelPlanID:this.travelPlan.travelPlanID
-    },'/wishlistmain')
+      travelPlanID: this.travelPlan.travelPlanID
+    }, '/wishlistmain')
   }
 
-  async fetchWishList(wishlistParams){
+  async fetchWishList(wishlistParams) {
     this.wishListSvc.getWishLists(wishlistParams).subscribe(
-      wishList=>{
-        this.wishList=wishList
+      wishList => {
+        this.wishList = wishList
       }
     )
   }
@@ -187,7 +199,7 @@ export class PlanFormPage implements OnInit {
   //   this.navCtrl.push(WishlistmainPage,{});
   // }
   //gotowishlistpage(){
-    //this.navCtrl.push(WishlistMainPage);
+  //this.navCtrl.push(WishlistMainPage);
   //}
   //async gotowishlistpage(){
 

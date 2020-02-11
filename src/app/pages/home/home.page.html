@@ -11,19 +11,19 @@
     <ion-list-header>
       <ion-label><h2>Places To Go</h2></ion-label>
     </ion-list-header>
-    <ion-card class="place-img" button>
+    <ion-card class="place-img" (click)="onCountryClick('Malaysia')" button>
       <img src="../../../assets/images/malaysia.jpg" alt="malaysia" />
       <ion-card-header>
         <ion-card-title>Malaysia</ion-card-title>
       </ion-card-header>
     </ion-card>
-    <ion-card class="place-img" button>
+    <ion-card class="place-img" (click)="onCountryClick('Thailand')"  button>
       <img src="../../../assets/images/thailand.jpg" alt="thailand" />
       <ion-card-header>
         <ion-card-title>Thailand</ion-card-title>
       </ion-card-header>
     </ion-card>
-    <ion-card class="place-img" button>
+    <ion-card class="place-img" (click)="onCountryClick('Korea')" button>
       <img src="../../../assets/images/korea.jpg" alt="korea" />
       <ion-card-header>
         <ion-card-title>Korea</ion-card-title>
