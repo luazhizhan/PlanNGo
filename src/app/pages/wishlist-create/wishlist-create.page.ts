@@ -10,6 +10,7 @@ import { NgForm } from '@angular/forms';
 import WishList from 'src/app/interfaces/wishlist';
 import TravelPlan from 'src/app/interfaces/travelPlan';
 import User from 'src/app/interfaces/user';
+import { invalid } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'app-wishlist-create',
@@ -24,6 +25,8 @@ export class WishlistCreatePage implements OnInit {
   Category: string[] = ["Food","Places of Interest"];
   TravelPlan: TravelPlan;
   user: User;
+
+  
 
   constructor(
     private modalCtrl: ModalController,
@@ -43,11 +46,13 @@ export class WishlistCreatePage implements OnInit {
         location: ['', [Validators.required]],
         url: ['', []],
         openingTime: ['', []],
-        price: ['', []]
+        price: ['', [Validators.min(1)]]
       },
       {}
     );
    }
+
+   
 
   ngOnInit() {
     this.user = this.authSvc.getUserInfo();
@@ -73,6 +78,8 @@ export class WishlistCreatePage implements OnInit {
   async onWishSubmit(values: WishList) {
     console.log("Testing");
     console.log(this.wishForm,'wishForm');
+    const x = document.forms["wishForm"]["price"].values;
+    console.log(x,'Price value')
     if (this.wishForm.invalid) {
       const toast = await this.utilsSvc.presentToast(
         'Please fill up the necessary fields on the form.',
@@ -83,6 +90,11 @@ export class WishlistCreatePage implements OnInit {
       return toast.present();
       console.log('Error!')
     }
+   
+
+    this.wishForm.get('price').hasError('minlength');
+    
+    
     const loadingPopup = await this.utilsSvc.presentLoading('Loading...');
     console.log("Button")
     if (this.taskName === 'Create') {
@@ -99,16 +111,15 @@ export class WishlistCreatePage implements OnInit {
   createWishList(values: WishList, loadingPopup: HTMLIonLoadingElement) {
     console.log("Create button");
     this.setWishListObj(values,undefined);
-    console.log(values,'hi')
+
     this.WishPlanSvc.createWishList(this.wishlist).subscribe(
       async result => {
-        console.log('Here!!')
-        console.log(result,'result info')
+
         await this.utilsSvc.presentStatusToast(
           result.results.insertId,
           'Wish List created successfully'
         );
-        console.log(result.results.insertId,'result!')
+
         if (result.results.insertId) {
           this.navCtrl.navigateRoot('/wishlistmain');
         }

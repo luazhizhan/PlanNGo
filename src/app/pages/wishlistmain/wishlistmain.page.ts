@@ -63,6 +63,8 @@ export class WishlistmainPage implements OnInit {
     },`/wishlist-detail/${wishlistID}`)
   }
 
+  
+
   // wishlistClick(wishlist: WishList){
   //   this.utilsSvc.navigateForward(
   //     {

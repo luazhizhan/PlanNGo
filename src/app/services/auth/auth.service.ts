@@ -4,6 +4,7 @@ import apisConfigs from '../../configs/apiConfigs';
 import { httpConfigs } from '../../configs/httpConfigs';
 import User from '../../interfaces/user';
 import { Observable } from 'rxjs';
+import WishList from '../../interfaces/wishlist';
 
 @Injectable({
   providedIn: 'root'
