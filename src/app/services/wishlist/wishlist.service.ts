@@ -21,17 +21,16 @@ export class WishListService {
     })
   }
 
-  createWishList(wishlist: WishList): Observable<any> {
-    console.log(wishlist,'wishlist')
-    const postData = JSON.stringify(wishlist);
-    return this.http.post(apisConfigs.post.createWishList, postData, httpConfigs);
-  }
-
   getWishList(): Observable<any> {
     return this.http.get(apisConfigs.get.getWishList);
   }
 
-  getWishLists(params:Object): Observable<any> {
+  createWishList(wishList: WishList): Observable<any> {
+    const postData = JSON.stringify(wishList);
+    return this.http.post(apisConfigs.post.createWishList, postData, httpConfigs);
+  }
+
+  getWishLists(params: Object): Observable<any> {
     if (Object.keys(params).length > 0) {
       let query = apisConfigs.get.getWishList;
       for (let param in params) {
@@ -113,6 +112,3 @@ export class WishListService {
     return this.http.delete(apisConfigs.delete.deleteWishList, httpConfigs);
   }
 }
-
-
-

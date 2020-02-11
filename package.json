@@ -1,7 +1,7 @@
 {
   "name": "PlanNGo",
-  "version": "0.1.0",
-  "author": "Ionic Framework",
+  "version": "1.0.0",
+  "author": "PlanNGo Team",
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
@@ -36,6 +36,13 @@
     "capacitor-resources": "^1.2.8",
     "cordova": "^9.0.0",
     "heroku": "^7.37.0",
+    "@ionic-native/image-picker": "^5.20.0",
+    "cordova-android": "^8.1.0",
+    "cordova-plugin-android-permissions": "^1.0.2",
+    "cordova-plugin-camera": "^4.1.0",
+    "cordova-plugin-file": "^6.0.2",
+    "cordova-plugin-filepath": "^1.5.7",
+    "cordova-plugin-telerik-imagepicker": "git+https://github.com/Telerik-Verified-Plugins/ImagePicker.git",
     "ngx-webstorage-service": "^4.1.0",
     "core-js": "^2.6.11",
     "rxjs": "~6.5.1",
@@ -84,16 +91,21 @@
   "description": "An Ionic project",
   "cordova": {
     "plugins": {
-      "cordova-plugin-camera": {},
+      "cordova-plugin-camera": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
       "cordova-plugin-file": {},
       "cordova-plugin-whitelist": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-filepath": {},
-      "cordova-plugin-android-permissions": {}
+      "cordova-plugin-android-permissions": {},
+      "cordova-plugin-telerik-imagepicker": {}
     },
     "platforms": [
       "android"
