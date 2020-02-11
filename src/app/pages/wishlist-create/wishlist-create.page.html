@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="wishForm" (ngSubmit)="onWishSubmit(wishForm.value)">
+  <form [formGroup]="wishForm">
     <ion-item>
       <ion-label>
         Category
@@ -56,7 +56,7 @@
       <ion-label>
         Price:
       </ion-label>
-        <ion-input placeholder="Optional" formControlName="price"></ion-input>
+        <ion-input placeholder="Optional" formControlName="price" type="number"></ion-input>
     </ion-item>
     <ion-button color="primary" type="submit" style="text-transform:capitalize;" expand="block" (click)="onWishSubmit(wishForm.value)">
       {{taskName}}

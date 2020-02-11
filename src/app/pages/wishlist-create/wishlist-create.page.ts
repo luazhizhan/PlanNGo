@@ -43,7 +43,7 @@ export class WishlistCreatePage implements OnInit {
         location: ['', [Validators.required]],
         url: ['', []],
         openingTime: ['', []],
-        price: ['', []]
+        price: ['', [Validators.min(1)]]
       },
       {}
     );
