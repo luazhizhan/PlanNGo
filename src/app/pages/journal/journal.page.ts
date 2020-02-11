@@ -26,13 +26,18 @@ export class JournalPage {
     private imageSvc: ImageService
   ) {}
 
-  async ngOnInit() {
+   ionViewDidEnter() {
     this.user = this.authSvc.getUserInfo();
     const journalParams = {
       category: this.categoryValue
     };
     const imageParams = {};
     this.fetchTravelJournal(journalParams, imageParams);
+  }
+
+   ionViewDidLeave() {
+    this.journalList = [];
+    this.imageList = [];
   }
 
   async fetchTravelJournal(journalParams, imageParams) {

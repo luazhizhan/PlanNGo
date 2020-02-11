@@ -156,21 +156,40 @@ export class JournalDetailsPage implements OnInit {
     };
   }
 
-  onDelete(travelJournalID) {
+  async onDelete(travelJournalID) {
     const payload = {
       travelJournalID,
       userID: this.user.userID
     };
-    this.travelJournalSvc.removeTravelJournal(payload).subscribe(
-      async result => {
-        await this.utilsSvc.presentStatusToast(
-          result,
-          'Travel Journal has been deleted successfully'
-        );
-        this.navCtrl.navigateForward('/tabs/journal/');
-      },
-      async e => await this.utilsSvc.presentAsyncErrorToast(e)
-    );
+    const alert = await this.alertController.create({
+      header: 'Confirm to delete?',
+      message: 'Confirm deletion?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            return null;
+          }
+        }, {
+          text: 'Confirm',
+          handler: () => {
+            this.travelJournalSvc.removeTravelJournal(payload).subscribe(
+              async result => {
+                await this.utilsSvc.presentStatusToast(
+                  result,
+                  'Travel Journal has been deleted successfully'
+                );
+                this.navCtrl.navigateForward('/tabs/journal');
+              },
+              async e => await this.utilsSvc.presentAsyncErrorToast(e)
+            );
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   async onSubmit(values: TravelJournal) {
