@@ -9,7 +9,7 @@
     <!-- <ion-buttons slot="end" [hidden]="!isOwner">
       Edit
     </ion-buttons> -->
-    <ion-icon name="more" slot="end" (click)="onDelete(travelJournal.travelJournalID)" [hidden]="!isOwner">
+    <ion-icon class="icon-end" name="trash" slot="end" (click)="onDelete(travelJournal.travelJournalID)" [hidden]="!isOwner">
       Delete
     </ion-icon>
   </ion-toolbar>
@@ -64,8 +64,7 @@
         <ion-button (click)="presentAlertConfirm(journal)" slot="end" style="width:170px"
           >Add to wishlist</ion-button
         >
-        <ion-button (click)="onEditForm(true)" slot="end" style="width:170px"
-          >Edit</ion-button
+        <ion-button (click)="onEditForm(true)" slot="end" style="width:170px" [hidden]="!isOwner">Edit</ion-button
         >
       </ion-item>
       <ion-slides pager="true" [options]="slideOpts">
