@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>WishList Details</ion-title>
+    <ion-icon name="add" slot="end" (click)="onAddToItinerary()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card *ngIf="wishlistDetail">
+    <ion-card-header>
+      <ion-card-title>
+        {{wishlistDetail.name}}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Category: {{wishlistDetail.category}}</p>
+      <p>Description: {{wishlistDetail.description}}</p>
+      <p>Location: {{wishlistDetail.location}}</p>
+      <p>URL: {{wishlistDetail.url}}</p>
+      <p>Opening Time: {{wishlistDetail.openingTime}}</p>
+      <p>Price: {{wishlistDetail.price}}</p>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button [routerLink]="['/wishlist-update/',wishlistID]">
+    <ion-icon name="build"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

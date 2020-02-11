@@ -21,7 +21,7 @@ import { PopoverController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import WishList from '../../interfaces/wishList';
-import { WishlistService } from '../../services/wishlist/wishlist.service';
+import { WishListService } from '../../services/wishlist/wishlist.service';
 import { ImageService } from '../../services/image/image.service';
 import Image from 'src/app/interfaces/image';
 
@@ -55,7 +55,7 @@ export class JournalDetailsPage implements OnInit {
     private travelJournalSvc: TravelJournalService,
     private utilsSvc: UtilsService,
     private alertController: AlertController,
-    private wishListService: WishlistService,
+    private wishListService: WishListService,
     private authSvc: AuthService,
     private imageSvc: ImageService,
     private cameraService: CameraService,

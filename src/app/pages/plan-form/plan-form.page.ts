@@ -8,7 +8,10 @@ import { TravelPlanService } from '../../services/travel-plan/travel-plan.servic
 import { UtilsService } from '../../services/utils/utils.service';
 import User from 'src/app/interfaces/user';
 import TravelPlan from 'src/app/interfaces/travelPlan';
+import WishList from 'src/app/interfaces/wishlist';
 import { CollaboratorModalComponent } from '../../components/collaborator-modal/collaborator-modal.component';
+import { WishlistmainPage } from '../wishlistmain/wishlistmain.page';
+import { WishListService } from '../../services/wishlist/wishlist.service';
 
 @Component({
   selector: 'app-plan-form',
@@ -21,6 +24,7 @@ export class PlanFormPage implements OnInit {
   isCollab: boolean;
   user: User;
   travelPlan: TravelPlan;
+  wishList: WishList;
 
   constructor(
     private modalCtrl: ModalController,
@@ -29,7 +33,8 @@ export class PlanFormPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private authSvc: AuthService,
     private travelPlanSvc: TravelPlanService,
-    private utilsSvc: UtilsService
+    private utilsSvc: UtilsService,
+    private wishListSvc: WishListService
   ) {
     this.planForm = this.formBuilder.group(
       {
@@ -48,7 +53,7 @@ export class PlanFormPage implements OnInit {
 
   ngOnInit() {
     this.user = this.authSvc.getUserInfo();
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.activatedRoute.queryParams.subscribe(async params => {
       if (Object.keys(params).length) {
         if (params.travelPlan) {
           this.travelPlan = JSON.parse(params.travelPlan);
@@ -63,6 +68,10 @@ export class PlanFormPage implements OnInit {
             boardingTime: this.travelPlan.boardingTime,
             seatInfo: this.travelPlan.seatInfo
           });
+          const param = {
+            travelPlanID: this.travelPlan.travelPlanID
+          }
+          await this.fetchWishList(param);
           this.taskName = 'Update';
         } else {
           console.log(params.country);
@@ -97,6 +106,14 @@ export class PlanFormPage implements OnInit {
     return await modal.present();
   }
 
+  async toWishPage() {
+    console.log("testing 123");
+    const modal = await this.modalCtrl.create({
+      component: WishlistmainPage
+    });
+    console.log("test 2");
+    return await modal.present();
+  }
   async onPlanSubmit(values: TravelPlan) {
     if (this.planForm.invalid) {
       const toast = await this.utilsSvc.presentToast(
@@ -134,17 +151,20 @@ export class PlanFormPage implements OnInit {
     this.setTravelPlanObj(undefined, this.user.userID, values);
     this.travelPlanSvc.createTravelPlan(this.travelPlan).subscribe(
       async result => {
+        console.log(result, 'plan result')
         await this.utilsSvc.presentStatusToast(
-          result.travelPlanId,
+          result,
           'Travel plan created successfully'
         );
-        if (result.travelPlanId) {
+        console.log(result.travelPlanID, 'result travel!')
+        if (result) {
           this.navCtrl.navigateRoot('/tabs/plan');
         }
       },
       async e => await this.utilsSvc.presentAsyncErrorToast(e),
       () => loadingPopup.dismiss()
     );
+
   }
 
   updateTravelPlan(values: TravelPlan, loadingPopup: HTMLIonLoadingElement) {
@@ -160,4 +180,28 @@ export class PlanFormPage implements OnInit {
       () => loadingPopup.dismiss()
     );
   }
+
+  async goToWishList() {
+    this.utilsSvc.navigateForward({
+      travelPlanID: this.travelPlan.travelPlanID
+    }, '/wishlistmain')
+  }
+
+  async fetchWishList(wishlistParams) {
+    this.wishListSvc.getWishLists(wishlistParams).subscribe(
+      wishList => {
+        this.wishList = wishList
+      }
+    )
+  }
+  // goTowishlistMainPage()
+  // {
+  //   this.navCtrl.push(WishlistmainPage,{});
+  // }
+  //gotowishlistpage(){
+  //this.navCtrl.push(WishlistMainPage);
+  //}
+  //async gotowishlistpage(){
+
+  //}
 }
