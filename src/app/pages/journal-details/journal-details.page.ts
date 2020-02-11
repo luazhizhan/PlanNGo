@@ -128,6 +128,10 @@ export class JournalDetailsPage implements OnInit {
     });
   }
 
+  ionViewDidLeave() {
+    this.imageArr = [];
+  }
+
   createForm() {
     return new FormGroup({
       wishListItem: new FormControl('', Validators.required),
@@ -209,6 +213,7 @@ export class JournalDetailsPage implements OnInit {
               result,
               'Travel Journal Has been updated successfully'
             );
+            this.navCtrl.navigateForward('/tabs/journal');
           },
           async e => await this.utilsSvc.presentAsyncErrorToast(e)
         );
@@ -220,6 +225,7 @@ export class JournalDetailsPage implements OnInit {
               result,
               'Travel Journal Has been created successfully'
             );
+            this.navCtrl.navigateForward('/tabs/journal');
           },
           async e => await this.utilsSvc.presentAsyncErrorToast(e)
         );
@@ -334,11 +340,17 @@ export class JournalDetailsPage implements OnInit {
             image: buf
               .map(imageBuf => {
                 if (imageBuf.includes('data:image/jpeg;base64')) {
-                  imageBuf = imageBuf.includes('[')
-                    ? `${imageBuf.substring(imageBuf.indexOf(`[`) + 1)},${buf[index + 1]}`
-                    : buf[index + 1].includes(']')
-                    ? `${imageBuf},${buf[index + 1].substring(0, buf[index + 1].indexOf(']') - 1)}`
-                    : `${imageBuf},${buf[index + 1]}`;
+                  if(imageBuf.includes('[')){
+                    if(buf[index+1].includes(']')){
+                      imageBuf= `${imageBuf.substring(imageBuf.indexOf(`[`) + 1)},${buf[index + 1].substring(0, buf[index + 1].indexOf(']') - 1)}`
+                    }else{
+                      imageBuf= `${imageBuf.substring(imageBuf.indexOf(`[`) + 1)},${buf[index + 1]}`
+                    }
+                  }else if(buf[index + 1].includes(']')){
+                    imageBuf=`${imageBuf},${buf[index + 1].substring(0, buf[index + 1].indexOf(']') - 1)}`
+                  }else{
+                    imageBuf=`${imageBuf},${buf[index + 1]}`;
+                  }
                   index += 2;
                   return imageBuf.replace(/\"/g, '');
                 }
